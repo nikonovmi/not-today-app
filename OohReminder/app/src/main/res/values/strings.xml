@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">OohReminder</string>
+    <string name="action_about">About</string>
+    <string name="action_add">Add</string>
+
+    <string-array name="navigation_tabs">
+        <item>Books</item>
+        <item>Music</item>
+        <item>Movies</item>
+    </string-array>
+</resources>
