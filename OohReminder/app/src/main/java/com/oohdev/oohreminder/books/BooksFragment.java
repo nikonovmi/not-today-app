@@ -1,15 +1,16 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.books;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BooksFragment extends Fragment {
+import com.oohdev.oohreminder.ContentFragment;
+import com.oohdev.oohreminder.R;
 
+public class BooksFragment extends ContentFragment {
     public static BooksFragment newInstance() {
         Bundle args = new Bundle();
         BooksFragment fragment = new BooksFragment();
@@ -28,4 +29,8 @@ public class BooksFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_books, container, false);
     }
 
+    @Override
+    public void addElement() {
+
+    }
 }

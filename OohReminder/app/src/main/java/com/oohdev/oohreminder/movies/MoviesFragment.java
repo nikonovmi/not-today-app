@@ -1,13 +1,16 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.movies;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-public class MoviesFragment extends Fragment{
+import com.oohdev.oohreminder.ContentFragment;
+import com.oohdev.oohreminder.R;
+
+public class MoviesFragment extends ContentFragment {
     public static MoviesFragment newInstance() {
         Bundle args = new Bundle();
         MoviesFragment fragment = new MoviesFragment();
@@ -27,4 +30,8 @@ public class MoviesFragment extends Fragment{
     }
 
 
+    @Override
+    public void addElement() {
+        Toast.makeText(getContext(), "add movie", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#4b636e</color>
     <color name="colorAccent">#8d6e63</color>
     <color name="colorAccentDark">#5f4339</color>
+    <color name="colorFabMovies">#ffccbc</color>
+    <color name="colorFabBooks">#ffab91</color>
+    <color name="colorFabMusic">#ffcc80</color>
 </resources>

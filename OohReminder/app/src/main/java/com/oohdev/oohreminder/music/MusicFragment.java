@@ -1,14 +1,16 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.music;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MusicFragment extends Fragment{
+import com.oohdev.oohreminder.ContentFragment;
+import com.oohdev.oohreminder.R;
+
+public class MusicFragment extends ContentFragment {
     public static MusicFragment newInstance() {
         Bundle args = new Bundle();
         MusicFragment fragment = new MusicFragment();
@@ -27,4 +29,8 @@ public class MusicFragment extends Fragment{
         return inflater.inflate(R.layout.fragment_music, container, false);
     }
 
+    @Override
+    public void addElement() {
+
+    }
 }
