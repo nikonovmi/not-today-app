@@ -62,6 +62,7 @@ public class MoviesFragment extends ContentFragment {
                     }
                 }).show();
     }
+
     private void updateRecycler() {
         mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
     }

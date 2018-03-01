@@ -1,7 +1,9 @@
 package com.oohdev.oohreminder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -28,6 +30,7 @@ import junit.framework.Assert;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String GIT_URL = "https://github.com/degivan/ifmo-android-oohreminder";
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -79,8 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO
+        openWebPage(GIT_URL);
         return true;
+    }
+
+    private void openWebPage(String url) {
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            // page not found
+        }
     }
 
     private void animateFab(final int position) {
