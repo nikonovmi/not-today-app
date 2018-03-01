@@ -36,6 +36,15 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE, null, contentValues);
     }
 
+    public void insertMovie(MovieModel movie) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TITLE, movie.getTitle());
+        contentValues.put(DIRECTOR, movie.getDirector());
+        contentValues.put(DESCRIPTION, movie.getDescription());
+        db.insert(TABLE, null, contentValues);
+    }
+
     public List<MovieModel> getMovies() {
         List<MovieModel> movies = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();

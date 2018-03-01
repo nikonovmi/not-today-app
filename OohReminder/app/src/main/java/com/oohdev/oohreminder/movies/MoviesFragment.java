@@ -1,5 +1,6 @@
 package com.oohdev.oohreminder.movies;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,13 +58,34 @@ public class MoviesFragment extends ContentFragment {
                 .input(R.string.add_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        mDatabaseHelper.insertMovie(input.toString(), "unknown", "no description");
-                        updateRecycler();
+                        new GetMovieInfoTask(input.toString(), "unknown", "no description").execute();
                     }
                 }).show();
     }
-
     private void updateRecycler() {
         mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
+    }
+
+    private class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModel> {
+        private String title;
+        private String director;
+        private String description;
+
+        public GetMovieInfoTask(String title, String defDirector, String defDesc) {
+            this.title = title;
+            this.director = defDirector;
+            this.description = defDesc;
+        }
+
+        @Override
+        protected MovieModel doInBackground(Void... voids) {
+            return MovieApiHelper.getMovieModel(title, director, description);
+        }
+
+        @Override
+        protected void onPostExecute(MovieModel movieModel) {
+            mDatabaseHelper.insertMovie(movieModel);
+            updateRecycler();
+        }
     }
 }

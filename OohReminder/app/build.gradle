@@ -18,6 +18,11 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -28,6 +33,8 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.0.1'
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    compile group: 'info.movito', name: 'themoviedbapi', version: '1.7'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
