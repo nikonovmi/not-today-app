@@ -1,25 +1,24 @@
 package com.oohdev.oohreminder.movies;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.ContentFragment;
 import com.oohdev.oohreminder.R;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.oohdev.oohreminder.db.MovieDatabaseHelper;
 
 public class MoviesFragment extends ContentFragment {
     private RecyclerView mRecyclerView;
     private MoviesRecyclerAdapter mRecyclerAdapter;
-    private ArrayList<MovieModel> mMovieModels;
+    private MovieDatabaseHelper mDatabaseHelper;
 
     public static MoviesFragment newInstance() {
         Bundle args = new Bundle();
@@ -42,24 +41,29 @@ public class MoviesFragment extends ContentFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MovieModel model1 = new MovieModel();
-        model1.title = "Lost Highway";
-        model1.description = getResources().getString(R.string.tmpdescription);
-        model1.director = "David Lynch";
-        MovieModel model2 = new MovieModel();
-        model2.title = "Twin Peaks";
-        model2.description = getResources().getString(R.string.tmpdescription);
-        model2.director = "David Lynch XX";
-
-        mMovieModels = new ArrayList<>(Arrays.asList(model1, model2, model1, model2, model1, model2, model1, model2));
+        mDatabaseHelper = MovieDatabaseHelper.getInstance(getContext());
         mRecyclerView = view.findViewById(R.id.movies_recycler);
-        mRecyclerAdapter = new MoviesRecyclerAdapter(mMovieModels);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerAdapter = new MoviesRecyclerAdapter(mDatabaseHelper.getMovies());
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 
     @Override
     public void addElement() {
-        Toast.makeText(getContext(), "add movie", Toast.LENGTH_SHORT).show();
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.add_movie)
+                .inputRange(2, 30)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.add_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        mDatabaseHelper.insertMovie(input.toString(), "unknown", "no description");
+                        updateRecycler();
+                    }
+                }).show();
+    }
+
+    private void updateRecycler() {
+        mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
     }
 }

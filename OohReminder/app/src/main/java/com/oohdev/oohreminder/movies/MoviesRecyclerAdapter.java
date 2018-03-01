@@ -1,5 +1,6 @@
 package com.oohdev.oohreminder.movies;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,16 @@ import com.oohdev.oohreminder.R;
 import java.util.List;
 
 public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
-    List<MovieModel> movieModels;
+    private List<MovieModel> movieModels;
 
     public MoviesRecyclerAdapter(List<MovieModel> movieModels) {
         this.movieModels = movieModels;
+    }
+
+    public void updateMovies(@NonNull List<MovieModel> newMovies) {
+        movieModels.clear();
+        movieModels.addAll(newMovies);
+        notifyDataSetChanged();
     }
 
     @Override

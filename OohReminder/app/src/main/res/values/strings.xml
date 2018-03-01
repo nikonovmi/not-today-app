@@ -1,9 +1,12 @@
 <resources>
+    <string name="empty_string"/>
     <string name="app_name">OohReminder</string>
     <string name="action_about">About</string>
     <string name="action_add">Add</string>
     <string name="directed_by">Directed by: </string>
     <string name="button_add_book">Add a book</string>
+    <string name="add_movie">Add movie</string>
+    <string name="add_hint">Enter the title</string>
     <string name="tmpdescription">So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!</string>
 
     <string-array name="navigation_tabs">
