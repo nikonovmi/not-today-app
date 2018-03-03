@@ -38,7 +38,7 @@ public class MovieApiHelper {
     }
 
     private static MovieModel getMovieModelById(@NonNull MovieModel movieModel, int id, @NonNull TmdbApi api) {
-        MovieDb result = api.getMovies().getMovie(id, "en", TmdbMovies.MovieMethod.credits);
+        MovieDb result = api.getMovies().getMovie(id, "", TmdbMovies.MovieMethod.credits);
         List<PersonCrew> crew = result.getCrew();
 
         if (crew != null) {

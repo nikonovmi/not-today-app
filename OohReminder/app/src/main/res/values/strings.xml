@@ -8,6 +8,10 @@
     <string name="add_movie">Add movie</string>
     <string name="add_hint">Enter the title</string>
     <string name="tmpdescription">So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!</string>
+    <string name="delete_movie">Delete movie</string>
+    <string name="sure_to_delete_movie">Are you sure you want to delete this movie?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 
     <string-array name="navigation_tabs">
         <item>Movies</item>

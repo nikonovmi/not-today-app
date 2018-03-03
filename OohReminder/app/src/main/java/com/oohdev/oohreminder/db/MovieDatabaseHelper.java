@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 
 import com.oohdev.oohreminder.movies.MovieModel;
 
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertMovie(@NonNull MovieModel movie) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, movie.getTitle());
         contentValues.put(DIRECTOR, movie.getDirector());
@@ -39,7 +41,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     @NonNull
     public List<MovieModel> getMovies() {
         List<MovieModel> movies = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         try(Cursor cursor = db.rawQuery("select * from " + TABLE + " ;", null)) {
             MovieModel movieModel;
             while (cursor.moveToNext()) {
@@ -69,5 +71,9 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE + " ;");
+    }
+
+    public void removeMovie(String title) {
+        getWritableDatabase().delete(TABLE, TITLE + "=\"" + title + "\"", null);
     }
 }

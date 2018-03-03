@@ -12,16 +12,12 @@ import com.oohdev.oohreminder.R;
 import java.util.List;
 
 public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
+    private final MoviesFragment.MovieItemClickListener mClickListener;
     private List<MovieModel> movieModels;
 
-    public MoviesRecyclerAdapter(List<MovieModel> movieModels) {
+    public MoviesRecyclerAdapter(List<MovieModel> movieModels, MoviesFragment.MovieItemClickListener longClickListener) {
+        this.mClickListener = longClickListener;
         this.movieModels = movieModels;
-    }
-
-    public void updateMovies(@NonNull List<MovieModel> newMovies) {
-        movieModels.clear();
-        movieModels.addAll(newMovies);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -43,16 +39,42 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         return movieModels.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void updateMovies(@NonNull List<MovieModel> newMovies) {
+        movieModels.clear();
+        movieModels.addAll(newMovies);
+        notifyDataSetChanged();
+    }
+
+    public List<MovieModel> getItems() {
+        return movieModels;
+    }
+
+    public void addItem(MovieModel movieModel) {
+        movieModels.add(0, movieModel);
+        notifyItemInserted(0);
+    }
+
+    public void removeItem(int position) {
+        movieModels.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         private final TextView movieTitle;
         private final TextView movieDirector;
         private final TextView movieDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnLongClickListener(this);
             movieTitle = itemView.findViewById(R.id.movie_title);
             movieDirector = itemView.findViewById(R.id.movie_director);
             movieDescription = itemView.findViewById(R.id.movie_desc);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return mClickListener.onLongClick(getAdapterPosition());
         }
     }
 }
