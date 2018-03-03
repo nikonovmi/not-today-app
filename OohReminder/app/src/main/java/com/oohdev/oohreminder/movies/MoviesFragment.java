@@ -16,12 +16,15 @@ import com.oohdev.oohreminder.ContentFragment;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.db.MovieDatabaseHelper;
 
+import java.lang.ref.WeakReference;
+
 public class MoviesFragment extends ContentFragment {
     private RecyclerView mRecyclerView;
     private MoviesRecyclerAdapter mRecyclerAdapter;
     private MovieDatabaseHelper mDatabaseHelper;
 
     public static MoviesFragment newInstance() {
+        // Bundle logic might be useful in future
         Bundle args = new Bundle();
         MoviesFragment fragment = new MoviesFragment();
         fragment.setArguments(args);
@@ -35,12 +38,12 @@ public class MoviesFragment extends ContentFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mDatabaseHelper = MovieDatabaseHelper.getInstance(getContext());
         mRecyclerView = view.findViewById(R.id.movies_recycler);
@@ -50,15 +53,25 @@ public class MoviesFragment extends ContentFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateRecycler();
+    }
+
+    @Override
     public void addElement() {
-        new MaterialDialog.Builder(getContext())
+        final MoviesFragment currentFragment = this;
+        if (currentFragment.getContext() == null) {
+            return;
+        }
+        new MaterialDialog.Builder(currentFragment.getContext())
                 .title(R.string.add_movie)
                 .inputRange(2, 30)
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .input(R.string.add_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        new GetMovieInfoTask(input.toString(), "unknown", "no description").execute();
+                        new GetMovieInfoTask(currentFragment, input.toString(), "unknown", "no mDescription").execute();
                     }
                 }).show();
     }
@@ -67,26 +80,35 @@ public class MoviesFragment extends ContentFragment {
         mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
     }
 
-    private class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModel> {
-        private String title;
-        private String director;
-        private String description;
+    // static modifier and WeakReference logic are required to avoid memory leak: goo.gl/hy74u2
+    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModel> {
+        private final WeakReference<MoviesFragment> moviesFragmentRef;
+        private final String mTitle;
+        private final String mDirector;
+        private final String mDescription;
 
-        public GetMovieInfoTask(String title, String defDirector, String defDesc) {
-            this.title = title;
-            this.director = defDirector;
-            this.description = defDesc;
+        GetMovieInfoTask(MoviesFragment moviesFragment, String title, String defDirector, String defDesc) {
+            moviesFragmentRef = new WeakReference<>(moviesFragment);
+            mTitle = title;
+            mDirector = defDirector;
+            mDescription = defDesc;
         }
 
         @Override
         protected MovieModel doInBackground(Void... voids) {
-            return MovieApiHelper.getMovieModel(title, director, description);
+            return MovieApiHelper.getMovieModel(mTitle, mDirector, mDescription);
         }
 
         @Override
         protected void onPostExecute(MovieModel movieModel) {
-            mDatabaseHelper.insertMovie(movieModel);
-            updateRecycler();
+            MoviesFragment fragment = moviesFragmentRef.get();
+            if (fragment == null || fragment.getContext() == null) {
+                return;
+            }
+            MovieDatabaseHelper.getInstance(fragment.getContext()).insertMovie(movieModel);
+            if (fragment.isResumed()) {
+                fragment.updateRecycler();
+            }
         }
     }
 }

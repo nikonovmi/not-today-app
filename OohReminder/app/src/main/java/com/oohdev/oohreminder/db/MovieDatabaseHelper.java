@@ -20,23 +20,14 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     private static MovieDatabaseHelper mInstance = null;
 
     @NonNull
-    public static MovieDatabaseHelper getInstance(Context context) {
+    public static MovieDatabaseHelper getInstance(@NonNull Context context) {
         if (mInstance == null) {
             mInstance = new MovieDatabaseHelper(context);
         }
         return mInstance;
     }
 
-    public void insertMovie(String title, String director, String description) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TITLE, title);
-        contentValues.put(DIRECTOR, director);
-        contentValues.put(DESCRIPTION, description);
-        db.insert(TABLE, null, contentValues);
-    }
-
-    public void insertMovie(MovieModel movie) {
+    public void insertMovie(@NonNull MovieModel movie) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, movie.getTitle());
@@ -45,11 +36,12 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE, null, contentValues);
     }
 
+    @NonNull
     public List<MovieModel> getMovies() {
         List<MovieModel> movies = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         try(Cursor cursor = db.rawQuery("select * from " + TABLE + " ;", null)) {
-            MovieModel movieModel = null;
+            MovieModel movieModel;
             while (cursor.moveToNext()) {
                 movieModel = new MovieModel();
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE));
@@ -64,7 +56,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         return movies;
     }
 
-    private MovieDatabaseHelper(Context context) {
+    private MovieDatabaseHelper(@NonNull Context context) {
         super(context, DatabaseValueClass.DATABASE, null, 1);
     }
 

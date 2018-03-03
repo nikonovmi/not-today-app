@@ -31,14 +31,13 @@ public class MovieApiHelper {
             }
 
             MovieDb result = results.get(0);
-
             return getMovieModelById(movieModel, result.getId(), api);
         } catch (Exception e) {
             return movieModel;
         }
     }
 
-    private static MovieModel getMovieModelById(@NonNull MovieModel movieModel, int id, TmdbApi api) {
+    private static MovieModel getMovieModelById(@NonNull MovieModel movieModel, int id, @NonNull TmdbApi api) {
         MovieDb result = api.getMovies().getMovie(id, "en", TmdbMovies.MovieMethod.credits);
         List<PersonCrew> crew = result.getCrew();
 

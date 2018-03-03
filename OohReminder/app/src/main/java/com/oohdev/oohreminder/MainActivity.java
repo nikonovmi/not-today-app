@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Also required to color fab in the right color when app starts
+        // (default is colorAccent)
         animateFab(mTabLayout.getSelectedTabPosition());
     }
 
@@ -91,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        } else {
-            // page not found
         }
     }
 
@@ -124,9 +126,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  Only ContentFragments allowed to be used in this PageAdapter.
+     *  Only ContentFragments allowed to be used in this FragmentPagerAdapter.
      */
     private static class MainActivityPagerAdapter extends FragmentPagerAdapter {
+        private final static int NUMBER_OF_TABS = 3;
         private final String[] mTabNames;
         private ContentFragment mCurrentFragment;
 
@@ -134,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             super(fm);
             Resources res = context.getResources();
             mTabNames = res.getStringArray(R.array.navigation_tabs);
+            Assert.assertEquals(NUMBER_OF_TABS, mTabNames.length);
         }
 
         public ContentFragment getCurrentContentFragment() {
@@ -165,10 +169,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return NUMBER_OF_TABS;
         }
 
         @Override
+        @NonNull
         public CharSequence getPageTitle(int position) {
             return mTabNames[position];
         }
