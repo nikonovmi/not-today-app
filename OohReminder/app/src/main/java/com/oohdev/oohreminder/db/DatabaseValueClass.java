@@ -1,6 +1,7 @@
 package com.oohdev.oohreminder.db;
 
 public class DatabaseValueClass {
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE = "oohreminder.db";
     public static final String MOVIE_TABLE = "movie_table";
     public static final String MUSIC_TABLE = "music_table";

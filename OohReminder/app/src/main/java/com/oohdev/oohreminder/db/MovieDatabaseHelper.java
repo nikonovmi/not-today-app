@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 
 import com.oohdev.oohreminder.movies.MovieModel;
 
-import junit.framework.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +17,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     private static final String TITLE = "title";
     private static final String DIRECTOR = "director";
     private static final String DESCRIPTION = "description";
+    private static final String TIMESTAMP = "timestamp_column";
     private static MovieDatabaseHelper mInstance = null;
 
     @NonNull
@@ -42,7 +41,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     public List<MovieModel> getMovies() {
         List<MovieModel> movies = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
-        try(Cursor cursor = db.rawQuery("select * from " + TABLE + " ;", null)) {
+        try(Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP +" desc;", null)) {
             MovieModel movieModel;
             while (cursor.moveToNext()) {
                 movieModel = new MovieModel();
@@ -59,12 +58,13 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private MovieDatabaseHelper(@NonNull Context context) {
-        super(context, DatabaseValueClass.DATABASE, null, 1);
+        super(context, DatabaseValueClass.DATABASE, null, DatabaseValueClass.DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String que = "CREATE TABLE " + TABLE + "(" + TITLE + " Text, " + DIRECTOR + " Text, " + DESCRIPTION + " Text);";
+        String que = "CREATE TABLE " + TABLE + "(" + TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                + TITLE + " Text, " + DIRECTOR + " Text, " + DESCRIPTION + " Text);";
         sqLiteDatabase.execSQL(que);
     }
 
