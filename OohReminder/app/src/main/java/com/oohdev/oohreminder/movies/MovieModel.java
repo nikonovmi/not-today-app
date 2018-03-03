@@ -4,6 +4,7 @@ public class MovieModel {
     public String title;
     public String director;
     public String description;
+    public String posterUrl;
 
     public String getTitle() {
         return title;
@@ -17,6 +18,10 @@ public class MovieModel {
         return description;
     }
 
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -27,5 +32,9 @@ public class MovieModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 }

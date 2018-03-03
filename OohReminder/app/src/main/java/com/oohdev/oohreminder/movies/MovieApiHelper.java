@@ -13,12 +13,14 @@ import info.movito.themoviedbapi.model.people.PersonCrew;
 
 public class MovieApiHelper {
     private static final String APIKEY = "ce7de4425aba73430f65ae5ba7544419";
+    private static final String POSTER_URL_PREFIX = "http://image.tmdb.org/t/p/w185";
 
     public static MovieModel getMovieModel(@NonNull String title, @NonNull String defaultDirector, @NonNull String defaultDesc) {
         MovieModel movieModel = new MovieModel();
-        movieModel.title = title;
-        movieModel.director = defaultDirector;
-        movieModel.description = defaultDesc;
+        movieModel.setTitle(title);
+        movieModel.setDirector(defaultDirector);
+        movieModel.setDescription(defaultDesc);
+        movieModel.setPosterUrl("");
 
         try {
             TmdbApi api = new TmdbApi(APIKEY);
@@ -50,7 +52,10 @@ public class MovieApiHelper {
             }
         }
         if (result.getOverview() != null) {
-            movieModel.description = result.getOverview();
+            movieModel.setDescription(result.getOverview());
+        }
+        if (result.getPosterPath() != null) {
+            movieModel.setPosterUrl(POSTER_URL_PREFIX + result.getPosterPath());
         }
         return movieModel;
     }

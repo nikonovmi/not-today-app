@@ -22,7 +22,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_card, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, null);
         return new ViewHolder(view);
     }
 
@@ -59,7 +59,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         notifyItemRemoved(position);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener {
         private final TextView movieTitle;
         private final TextView movieDirector;
         private final TextView movieDescription;
@@ -67,6 +67,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
             movieTitle = itemView.findViewById(R.id.movie_title);
             movieDirector = itemView.findViewById(R.id.movie_director);
             movieDescription = itemView.findViewById(R.id.movie_desc);
@@ -75,6 +76,11 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         @Override
         public boolean onLongClick(View view) {
             return mClickListener.onLongClick(getAdapterPosition());
+        }
+
+        @Override
+        public void onClick(View v) {
+            mClickListener.onClick(getAdapterPosition());
         }
     }
 }

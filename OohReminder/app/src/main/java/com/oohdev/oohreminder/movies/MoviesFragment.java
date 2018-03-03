@@ -4,18 +4,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.ContentFragment;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.db.MovieDatabaseHelper;
+import com.squareup.picasso.Picasso;
 
 import junit.framework.Assert;
 
@@ -54,7 +57,7 @@ public class MoviesFragment extends ContentFragment {
         mDatabaseHelper = MovieDatabaseHelper.getInstance(getContext());
         mRecyclerView = view.findViewById(R.id.movies_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new MoviesRecyclerAdapter(mDatabaseHelper.getMovies(), mMovieItemClickListener);
+        mRecyclerAdapter = new MoviesRecyclerAdapter(mDatabaseHelper.getMoviesOrderedByDate(), mMovieItemClickListener);
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 
@@ -83,7 +86,7 @@ public class MoviesFragment extends ContentFragment {
     }
 
     private void updateRecycler() {
-        mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
+        mRecyclerAdapter.updateMovies(mDatabaseHelper.getMoviesOrderedByDate());
     }
 
     private void updateRecycler(@NonNull MovieModel movieModel) {
@@ -93,7 +96,7 @@ public class MoviesFragment extends ContentFragment {
 
     public class MovieItemClickListener {
         public boolean onLongClick(final int position) {
-            final String itemTitle = mDatabaseHelper.getMovies().get(position).title;
+            final String itemTitle = mRecyclerAdapter.getItems().get(position).title;
             Assert.assertNotNull(getContext());
             new MaterialDialog.Builder(getContext())
                     .title(R.string.delete_movie)
@@ -108,6 +111,35 @@ public class MoviesFragment extends ContentFragment {
                         }
                     }).show();
             return true;
+        }
+
+        public void onClick(int position) {
+            final MovieModel movieModel = mRecyclerAdapter.getItems().get(position);
+            Assert.assertNotNull(getContext());
+            MaterialDialog completeInfoDialog = new MaterialDialog.Builder(getContext())
+                    .title(R.string.movie_complete_desc)
+                    .customView(R.layout.movie_card_complete, true)
+                    .positiveText(R.string.ok)
+                    .build();
+            View movieCardComplete = completeInfoDialog.getCustomView();
+            TextView title = movieCardComplete.findViewById(R.id.movie_title_complete);
+            title.setText(movieModel.getTitle());
+            TextView desc = movieCardComplete.findViewById(R.id.movie_desc_complete);
+            desc.setText(movieModel.getDescription());
+            TextView director = movieCardComplete.findViewById(R.id.movie_director_complete);
+            director.setText(movieModel.getDirector());
+            AppCompatImageView poster = movieCardComplete.findViewById(R.id.movie_poster);
+            if (!movieModel.posterUrl.isEmpty()) {
+                Picasso.with(getContext())
+                        .load(movieModel.getPosterUrl())
+                        .error(R.drawable.unknown_movie)
+                        .into(poster);
+            } else {
+                Picasso.with(getContext())
+                        .load(R.drawable.unknown_movie)
+                        .into(poster);
+            }
+            completeInfoDialog.show();
         }
     }
 
