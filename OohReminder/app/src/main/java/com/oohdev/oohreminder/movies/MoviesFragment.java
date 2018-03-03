@@ -86,7 +86,7 @@ public class MoviesFragment extends ContentFragment {
         mRecyclerAdapter.updateMovies(mDatabaseHelper.getMovies());
     }
 
-    private void updateRecycler(MovieModel movieModel) {
+    private void updateRecycler(@NonNull MovieModel movieModel) {
         mRecyclerAdapter.addItem(movieModel);
         mRecyclerView.scrollToPosition(0);
     }
@@ -126,12 +126,13 @@ public class MoviesFragment extends ContentFragment {
         }
 
         @Override
+        @NonNull
         protected MovieModel doInBackground(Void... voids) {
             return MovieApiHelper.getMovieModel(mTitle, mDirector, mDescription);
         }
 
         @Override
-        protected void onPostExecute(MovieModel movieModel) {
+        protected void onPostExecute(@NonNull MovieModel movieModel) {
             MoviesFragment fragment = moviesFragmentRef.get();
             if (fragment == null || fragment.getContext() == null) {
                 return;
