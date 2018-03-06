@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.ContentFragment;
+import com.oohdev.oohreminder.ContentItemClickResolver;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.db.MovieDatabaseHelper;
 import com.squareup.picasso.Picasso;
@@ -94,9 +95,10 @@ public class MoviesFragment extends ContentFragment {
         mRecyclerView.scrollToPosition(0);
     }
 
-    public class MovieItemClickListener {
-        public boolean onLongClick(final int position) {
-            final String itemTitle = mRecyclerAdapter.getItems().get(position).title;
+    public class MovieItemClickListener implements ContentItemClickResolver {
+        @Override
+        public boolean onLongClick(final int item) {
+            final String itemTitle = mRecyclerAdapter.getItems().get(item).title;
             Assert.assertNotNull(getContext());
             new MaterialDialog.Builder(getContext())
                     .title(R.string.delete_movie)
@@ -106,15 +108,16 @@ public class MoviesFragment extends ContentFragment {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            mRecyclerAdapter.removeItem(position);
+                            mRecyclerAdapter.removeItem(item);
                             mDatabaseHelper.removeMovie(itemTitle);
                         }
                     }).show();
             return true;
         }
 
-        public void onClick(int position) {
-            final MovieModel movieModel = mRecyclerAdapter.getItems().get(position);
+        @Override
+        public void onClick(int item) {
+            final MovieModel movieModel = mRecyclerAdapter.getItems().get(item);
             Assert.assertNotNull(getContext());
             MaterialDialog completeInfoDialog = new MaterialDialog.Builder(getContext())
                     .title(R.string.movie_complete_desc)

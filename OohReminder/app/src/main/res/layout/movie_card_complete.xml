@@ -13,8 +13,7 @@
             android:id="@+id/movie_poster"
             android:layout_width="@dimen/movie_poster_width"
             android:layout_height="@dimen/movie_poster_height"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/colorPosterBackground"/>
+            android:layout_marginRight="10dp"/>
 
         <LinearLayout
             android:layout_width="0dp"

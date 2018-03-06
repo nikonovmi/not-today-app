@@ -7,16 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.oohdev.oohreminder.ContentItemClickResolver;
 import com.oohdev.oohreminder.R;
 
 import java.util.List;
 
 public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
-    private final MoviesFragment.MovieItemClickListener mClickListener;
+    private final ContentItemClickResolver mItemClickResolver;
     private List<MovieModel> movieModels;
 
     public MoviesRecyclerAdapter(List<MovieModel> movieModels, MoviesFragment.MovieItemClickListener longClickListener) {
-        this.mClickListener = longClickListener;
+        this.mItemClickResolver = longClickListener;
         this.movieModels = movieModels;
     }
 
@@ -75,12 +76,12 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
         @Override
         public boolean onLongClick(View view) {
-            return mClickListener.onLongClick(getAdapterPosition());
+            return mItemClickResolver.onLongClick(getAdapterPosition());
         }
 
         @Override
         public void onClick(View v) {
-            mClickListener.onClick(getAdapterPosition());
+            mItemClickResolver.onClick(getAdapterPosition());
         }
     }
 }
