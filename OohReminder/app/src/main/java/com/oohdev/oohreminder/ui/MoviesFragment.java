@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.movies;
+package com.oohdev.oohreminder.ui;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.oohdev.oohreminder.ContentFragment;
-import com.oohdev.oohreminder.ContentItemClickResolver;
+import com.oohdev.oohreminder.core.api.MovieApiHelper;
+import com.oohdev.oohreminder.core.model.MovieModel;
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.db.MovieDatabaseHelper;
+import com.oohdev.oohreminder.core.db.MovieDatabaseHelper;
 import com.squareup.picasso.Picasso;
 
 import junit.framework.Assert;
@@ -98,7 +98,7 @@ public class MoviesFragment extends ContentFragment {
     public class MovieItemClickListener implements ContentItemClickResolver {
         @Override
         public boolean onLongClick(final int item) {
-            final String itemTitle = mRecyclerAdapter.getItems().get(item).title;
+            final String itemTitle = mRecyclerAdapter.getItems().get(item).getTitle();
             Assert.assertNotNull(getContext());
             new MaterialDialog.Builder(getContext())
                     .title(R.string.delete_movie)
@@ -132,7 +132,7 @@ public class MoviesFragment extends ContentFragment {
             TextView director = movieCardComplete.findViewById(R.id.movie_director_complete);
             director.setText(movieModel.getDirector());
             AppCompatImageView poster = movieCardComplete.findViewById(R.id.movie_poster);
-            if (!movieModel.posterUrl.isEmpty()) {
+            if (!movieModel.getTitle().isEmpty()) {
                 Picasso.with(getContext())
                         .load(movieModel.getPosterUrl())
                         .error(R.drawable.unknown_movie)

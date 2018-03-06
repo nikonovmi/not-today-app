@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 
-import com.oohdev.oohreminder.books.BooksFragment;
-import com.oohdev.oohreminder.movies.MoviesFragment;
-import com.oohdev.oohreminder.music.MusicFragment;
+import com.oohdev.oohreminder.R;
 
 import junit.framework.Assert;
 

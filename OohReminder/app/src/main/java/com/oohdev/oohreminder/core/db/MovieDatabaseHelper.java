@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.db;
+package com.oohdev.oohreminder.core.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
-import com.oohdev.oohreminder.movies.MovieModel;
+import com.oohdev.oohreminder.core.model.MovieModel;
 
 import java.util.ArrayList;
 import java.util.List;

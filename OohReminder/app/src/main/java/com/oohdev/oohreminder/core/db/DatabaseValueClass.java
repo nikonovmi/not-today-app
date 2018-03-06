@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.db;
+package com.oohdev.oohreminder.core.db;
 
 public class DatabaseValueClass {
     public static final int DATABASE_VERSION = 2;

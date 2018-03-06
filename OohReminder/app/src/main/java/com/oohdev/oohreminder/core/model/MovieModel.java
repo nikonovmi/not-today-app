@@ -1,10 +1,10 @@
-package com.oohdev.oohreminder.movies;
+package com.oohdev.oohreminder.core.model;
 
 public class MovieModel {
-    public String title;
-    public String director;
-    public String description;
-    public String posterUrl;
+    private String title;
+    private String director;
+    private String description;
+    private String posterUrl;
 
     public String getTitle() {
         return title;

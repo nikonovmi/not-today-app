@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.music;
+package com.oohdev.oohreminder.ui;
 
 
 import android.os.Bundle;
@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oohdev.oohreminder.ContentFragment;
 import com.oohdev.oohreminder.R;
 
-public class MusicFragment extends ContentFragment {
-    public static MusicFragment newInstance() {
+public class BooksFragment extends ContentFragment {
+    public static BooksFragment newInstance() {
         Bundle args = new Bundle();
-        MusicFragment fragment = new MusicFragment();
+        BooksFragment fragment = new BooksFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -26,7 +25,7 @@ public class MusicFragment extends ContentFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_music, container, false);
+        return inflater.inflate(R.layout.fragment_books, container, false);
     }
 
     @Override

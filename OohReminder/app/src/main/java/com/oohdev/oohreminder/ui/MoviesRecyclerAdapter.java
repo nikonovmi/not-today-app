@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.movies;
+package com.oohdev.oohreminder.ui;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.oohdev.oohreminder.ContentItemClickResolver;
+import com.oohdev.oohreminder.core.model.MovieModel;
 import com.oohdev.oohreminder.R;
 
 import java.util.List;

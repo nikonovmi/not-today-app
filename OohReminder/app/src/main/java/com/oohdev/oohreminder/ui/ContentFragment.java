@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.ui;
 
 import android.support.v4.app.Fragment;
 

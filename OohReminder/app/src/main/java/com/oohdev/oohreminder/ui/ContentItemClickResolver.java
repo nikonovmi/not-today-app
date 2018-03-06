@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder;
+package com.oohdev.oohreminder.ui;
 
 public interface ContentItemClickResolver {
     boolean onLongClick(int item);

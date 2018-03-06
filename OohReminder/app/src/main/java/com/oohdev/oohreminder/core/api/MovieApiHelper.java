@@ -1,6 +1,8 @@
-package com.oohdev.oohreminder.movies;
+package com.oohdev.oohreminder.core.api;
 
 import android.support.annotation.NonNull;
+
+import com.oohdev.oohreminder.core.model.MovieModel;
 
 import java.util.List;
 
