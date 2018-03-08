@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
-import com.oohdev.oohreminder.core.model.MovieModel;
+import com.oohdev.oohreminder.core.model.MovieModelComplete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         return mInstance;
     }
 
-    public void insertMovie(@NonNull MovieModel movie) {
+    public void insertMovie(@NonNull MovieModelComplete movie) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, movie.getTitle());
@@ -40,22 +40,22 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @NonNull
-    public List<MovieModel> getMoviesOrderedByDate() {
-        List<MovieModel> movies = new ArrayList<>();
+    public List<MovieModelComplete> getMoviesOrderedByDate() {
+        List<MovieModelComplete> movies = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         try(Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP +" desc;", null)) {
-            MovieModel movieModel;
+            MovieModelComplete movie;
             while (cursor.moveToNext()) {
-                movieModel = new MovieModel();
+                movie = new MovieModelComplete();
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE));
                 String director = cursor.getString(cursor.getColumnIndexOrThrow(DIRECTOR));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(DESCRIPTION));
                 String poster = cursor.getString(cursor.getColumnIndexOrThrow(POSTER));
-                movieModel.setTitle(title);
-                movieModel.setDirector(director);
-                movieModel.setDescription(description);
-                movieModel.setPosterUrl(poster);
-                movies.add(movieModel);
+                movie.setTitle(title);
+                movie.setDirector(director);
+                movie.setDescription(description);
+                movie.setPosterUrl(poster);
+                movies.add(movie);
             }
         }
         return movies;

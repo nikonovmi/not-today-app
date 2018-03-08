@@ -1,40 +1,40 @@
 package com.oohdev.oohreminder.core.model;
 
-public class MovieModel {
-    private String title;
-    private String director;
-    private String description;
-    private String posterUrl;
+public class MovieModelComplete {
+    private String mTitle;
+    private String mDirector;
+    private String mDescription;
+    private String mPosterUrl;
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getDirector() {
-        return director;
+        return mDirector;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public String getPosterUrl() {
-        return posterUrl;
+        return mPosterUrl;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        mTitle = title;
     }
 
     public void setDirector(String director) {
-        this.director = director;
+        mDirector = director;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
+        mPosterUrl = posterUrl;
     }
 }

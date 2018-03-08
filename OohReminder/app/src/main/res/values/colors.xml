@@ -7,6 +7,6 @@
     <color name="colorFabMovies">#ffccbc</color>
     <color name="colorFabBooks">#ffab91</color>
     <color name="colorFabMusic">#ffcc80</color>
-    <color name="colorCardBackground">#eceff1</color>
+    <color name="colorCardBackground">#f1f1f6</color>
     <color name="colorPosterBackground">#efebe9</color>
 </resources>

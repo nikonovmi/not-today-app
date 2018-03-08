@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.core.api.MovieApiHelper;
-import com.oohdev.oohreminder.core.model.MovieModel;
+import com.oohdev.oohreminder.core.model.MovieModelComplete;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.core.db.MovieDatabaseHelper;
 import com.squareup.picasso.Picasso;
@@ -90,12 +90,12 @@ public class MoviesFragment extends ContentFragment {
         mRecyclerAdapter.updateMovies(mDatabaseHelper.getMoviesOrderedByDate());
     }
 
-    private void updateRecycler(@NonNull MovieModel movieModel) {
-        mRecyclerAdapter.addItem(movieModel);
+    private void updateRecycler(@NonNull MovieModelComplete movie) {
+        mRecyclerAdapter.addItem(movie);
         mRecyclerView.scrollToPosition(0);
     }
 
-    public class MovieItemClickListener implements ContentItemClickResolver {
+    private class MovieItemClickListener implements ContentItemClickResolver {
         @Override
         public boolean onLongClick(final int item) {
             final String itemTitle = mRecyclerAdapter.getItems().get(item).getTitle();
@@ -117,7 +117,7 @@ public class MoviesFragment extends ContentFragment {
 
         @Override
         public void onClick(int item) {
-            final MovieModel movieModel = mRecyclerAdapter.getItems().get(item);
+            final MovieModelComplete movie = mRecyclerAdapter.getItems().get(item);
             Assert.assertNotNull(getContext());
             MaterialDialog completeInfoDialog = new MaterialDialog.Builder(getContext())
                     .title(R.string.movie_complete_desc)
@@ -126,15 +126,15 @@ public class MoviesFragment extends ContentFragment {
                     .build();
             View movieCardComplete = completeInfoDialog.getCustomView();
             TextView title = movieCardComplete.findViewById(R.id.movie_title_complete);
-            title.setText(movieModel.getTitle());
+            title.setText(movie.getTitle());
             TextView desc = movieCardComplete.findViewById(R.id.movie_desc_complete);
-            desc.setText(movieModel.getDescription());
+            desc.setText(movie.getDescription());
             TextView director = movieCardComplete.findViewById(R.id.movie_director_complete);
-            director.setText(movieModel.getDirector());
+            director.setText(movie.getDirector());
             AppCompatImageView poster = movieCardComplete.findViewById(R.id.movie_poster);
-            if (!movieModel.getTitle().isEmpty()) {
+            if (!movie.getPosterUrl().isEmpty()) {
                 Picasso.with(getContext())
-                        .load(movieModel.getPosterUrl())
+                        .load(movie.getPosterUrl())
                         .error(R.drawable.unknown_movie)
                         .into(poster);
             } else {
@@ -147,7 +147,7 @@ public class MoviesFragment extends ContentFragment {
     }
 
     // static modifier and WeakReference logic are required to avoid memory leak: goo.gl/hy74u2
-    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModel> {
+    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModelComplete> {
         private final WeakReference<MoviesFragment> moviesFragmentRef;
         private final String mTitle;
         private final String mDirector;
@@ -162,19 +162,19 @@ public class MoviesFragment extends ContentFragment {
 
         @Override
         @NonNull
-        protected MovieModel doInBackground(Void... voids) {
+        protected MovieModelComplete doInBackground(Void... voids) {
             return MovieApiHelper.getMovieModel(mTitle, mDirector, mDescription);
         }
 
         @Override
-        protected void onPostExecute(@NonNull MovieModel movieModel) {
+        protected void onPostExecute(@NonNull MovieModelComplete movie) {
             MoviesFragment fragment = moviesFragmentRef.get();
             if (fragment == null || fragment.getContext() == null) {
                 return;
             }
-            MovieDatabaseHelper.getInstance(fragment.getContext()).insertMovie(movieModel);
+            MovieDatabaseHelper.getInstance(fragment.getContext()).insertMovie(movie);
             if (fragment.isResumed()) {
-                fragment.updateRecycler(movieModel);
+                fragment.updateRecycler(movie);
             }
         }
     }

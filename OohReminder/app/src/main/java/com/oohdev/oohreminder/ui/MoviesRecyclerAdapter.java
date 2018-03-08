@@ -7,29 +7,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.oohdev.oohreminder.core.model.MovieModel;
+import com.oohdev.oohreminder.core.model.MovieModelComplete;
 import com.oohdev.oohreminder.R;
 
 import java.util.List;
 
-public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
+class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
     private final ContentItemClickResolver mItemClickResolver;
-    private List<MovieModel> movieModels;
+    private List<MovieModelComplete> mMovies;
 
-    public MoviesRecyclerAdapter(List<MovieModel> movieModels, MoviesFragment.MovieItemClickListener longClickListener) {
-        this.mItemClickResolver = longClickListener;
-        this.movieModels = movieModels;
+    MoviesRecyclerAdapter(List<MovieModelComplete> movies, ContentItemClickResolver longClickListener) {
+        mItemClickResolver = longClickListener;
+        mMovies = movies;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MovieModel model = movieModels.get(position);
+        MovieModelComplete model = mMovies.get(position);
         holder.movieTitle.setText(model.getTitle());
         holder.movieDirector.setText(model.getDirector());
         holder.movieDescription.setText(model.getDescription());
@@ -37,26 +37,26 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     @Override
     public int getItemCount() {
-        return movieModels.size();
+        return mMovies.size();
     }
 
-    public void updateMovies(@NonNull List<MovieModel> newMovies) {
-        movieModels.clear();
-        movieModels.addAll(newMovies);
+    void updateMovies(@NonNull List<MovieModelComplete> newMovies) {
+        mMovies.clear();
+        mMovies.addAll(newMovies);
         notifyDataSetChanged();
     }
 
-    public List<MovieModel> getItems() {
-        return movieModels;
+    List<MovieModelComplete> getItems() {
+        return mMovies;
     }
 
-    public void addItem(MovieModel movieModel) {
-        movieModels.add(0, movieModel);
+    void addItem(MovieModelComplete movie) {
+        mMovies.add(0, movie);
         notifyItemInserted(0);
     }
 
-    public void removeItem(int position) {
-        movieModels.remove(position);
+    void removeItem(int position) {
+        mMovies.remove(position);
         notifyItemRemoved(position);
     }
 
@@ -65,7 +65,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         private final TextView movieDirector;
         private final TextView movieDescription;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnLongClickListener(this);
             itemView.setOnClickListener(this);
