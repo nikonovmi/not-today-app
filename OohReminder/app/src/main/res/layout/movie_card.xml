@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="@color/colorCardBackground"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="3dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true"
     app:contentPadding="4dp">
@@ -18,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/base_card_margin_side"
         android:layout_marginStart="@dimen/base_card_margin_side"
-        android:padding="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/movie_title"
@@ -28,7 +28,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/base_card_text_size_L" />
+            android:textSize="@dimen/base_card_text_size_L"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
@@ -38,6 +39,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal">
 
             <TextView
@@ -61,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textStyle="italic"
             android:ellipsize="end"
-            android:maxLines="4" />
+            android:maxLines="4"
+            android:textStyle="italic" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
