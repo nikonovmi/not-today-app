@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.oohdev.oohreminder.core.api.MovieApiHelper;
-import com.oohdev.oohreminder.core.model.MovieModelComplete;
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.db.MovieDatabaseHelper;
+import com.oohdev.oohreminder.core.api.MovieApiHelper;
+import com.oohdev.oohreminder.core.db.MoviesTable;
+import com.oohdev.oohreminder.core.model.MovieModelComplete;
 import com.squareup.picasso.Picasso;
 
 import junit.framework.Assert;
@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
 public class MoviesFragment extends ContentFragment {
     private RecyclerView mRecyclerView;
     private MoviesRecyclerAdapter mRecyclerAdapter;
-    private MovieDatabaseHelper mDatabaseHelper;
+    private MoviesTable mMoviesTable;
     private MovieItemClickListener mMovieItemClickListener;
 
     public static MoviesFragment newInstance() {
@@ -55,10 +55,10 @@ public class MoviesFragment extends ContentFragment {
         super.onViewCreated(view, savedInstanceState);
         Assert.assertNotNull(getContext());
         mMovieItemClickListener = new MovieItemClickListener();
-        mDatabaseHelper = MovieDatabaseHelper.getInstance(getContext());
+        mMoviesTable = new MoviesTable(getContext());
         mRecyclerView = view.findViewById(R.id.movies_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new MoviesRecyclerAdapter(mDatabaseHelper.getMoviesOrderedByDate(), mMovieItemClickListener);
+        mRecyclerAdapter = new MoviesRecyclerAdapter(mMoviesTable.getMoviesOrderedByDate(), mMovieItemClickListener);
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 
@@ -78,7 +78,7 @@ public class MoviesFragment extends ContentFragment {
                 .title(R.string.add_movie)
                 .inputRange(2, 30)
                 .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(R.string.add_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
+                .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         new GetMovieInfoTask(currentFragment, input.toString(), "unknown", "no description").execute();
@@ -87,7 +87,7 @@ public class MoviesFragment extends ContentFragment {
     }
 
     private void updateRecycler() {
-        mRecyclerAdapter.updateMovies(mDatabaseHelper.getMoviesOrderedByDate());
+        mRecyclerAdapter.replaceItems(mMoviesTable.getMoviesOrderedByDate());
     }
 
     private void updateRecycler(@NonNull MovieModelComplete movie) {
@@ -109,7 +109,7 @@ public class MoviesFragment extends ContentFragment {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             mRecyclerAdapter.removeItem(item);
-                            mDatabaseHelper.removeMovie(itemTitle);
+                            mMoviesTable.removeMovie(itemTitle);
                         }
                     }).show();
             return true;
@@ -172,7 +172,7 @@ public class MoviesFragment extends ContentFragment {
             if (fragment == null || fragment.getContext() == null) {
                 return;
             }
-            MovieDatabaseHelper.getInstance(fragment.getContext()).insertMovie(movie);
+            new MoviesTable(fragment.getContext()).insertMovie(movie);
             if (fragment.isResumed()) {
                 fragment.updateRecycler(movie);
             }

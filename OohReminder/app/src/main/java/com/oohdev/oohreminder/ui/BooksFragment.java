@@ -6,11 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
+import com.oohdev.oohreminder.core.db.BooksTable;
 import com.oohdev.oohreminder.core.model.BookModelComplete;
 
 import junit.framework.Assert;
@@ -18,8 +22,9 @@ import junit.framework.Assert;
 import java.util.ArrayList;
 
 public class BooksFragment extends ContentFragment {
+    private BooksTable mBooksTable;
     private RecyclerView mRecyclerView;
-    private BooksRecyclerAdapter mBookAdapter;
+    private BooksRecyclerAdapter mRecyclerAdapter;
     private BookItemClickResolver mItemClickResolver;
 
     public static BooksFragment newInstance() {
@@ -44,24 +49,39 @@ public class BooksFragment extends ContentFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Assert.assertNotNull(getContext());
+        mBooksTable = new BooksTable(getContext());
         mItemClickResolver = new BookItemClickResolver();
         mRecyclerView = view.findViewById(R.id.books_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBookAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<BookModelComplete>(), mItemClickResolver);
-        mRecyclerView.setAdapter(mBookAdapter);
+        mRecyclerAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<BookModelComplete>(), mItemClickResolver);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+        updateRecycler();
     }
 
     @Override
     public void addElement() {
-        BookModelComplete bookModelComplete = new BookModelComplete();
-        bookModelComplete.setTitle("Trainspotting");
-        bookModelComplete.setAuthor("Irvine Welsh");
-        bookModelComplete.setCoverUrl("");
-        updateRecycler(bookModelComplete);
+        Assert.assertNotNull(getContext());
+        final BookModelComplete book = new BookModelComplete();
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.add_book)
+                .inputRange(2, 30)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        book.setTitle(input.toString());
+                        mBooksTable.addBook(book);
+                        updateRecycler(book);
+                    }
+                }).show();
+    }
+
+    private void updateRecycler() {
+        mRecyclerAdapter.replaceItems(mBooksTable.getBooksOrderedByDate());
     }
 
     private void updateRecycler(BookModelComplete bookModelComplete) {
-        mBookAdapter.addItem(bookModelComplete);
+        mRecyclerAdapter.addItem(bookModelComplete);
         mRecyclerView.scrollToPosition(0);
     }
 

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.oohdev.oohreminder.core.model.MovieModelComplete;
@@ -12,25 +11,29 @@ import com.oohdev.oohreminder.core.model.MovieModelComplete;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDatabaseHelper extends SQLiteOpenHelper {
-    private static final String TABLE = DatabaseValueClass.MOVIE_TABLE;
+public class MoviesTable {
+    static final String CREATE_TABLE_QUERY;
+    static final String UPDATE_QUERY;
+    private static final String TABLE = "movie_table";
     private static final String TITLE = "title";
     private static final String DIRECTOR = "director";
     private static final String DESCRIPTION = "description";
     private static final String TIMESTAMP = "timestamp_column";
     private static final String POSTER = "poster_column";
-    private static MovieDatabaseHelper mInstance = null;
+    private DatabaseHelper mDatabaseHelper;
 
-    @NonNull
-    public static MovieDatabaseHelper getInstance(@NonNull Context context) {
-        if (mInstance == null) {
-            mInstance = new MovieDatabaseHelper(context);
-        }
-        return mInstance;
+    static {
+        CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE + "(" + TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                + TITLE + " Text, " + DIRECTOR + " Text, " + DESCRIPTION + " Text, " + POSTER + " TEXT);";
+        UPDATE_QUERY = "DROP TABLE IF EXISTS " + TABLE + " ;";
+    }
+
+    public MoviesTable(@NonNull Context context) {
+        mDatabaseHelper = DatabaseHelper.getInstance(context);
     }
 
     public void insertMovie(@NonNull MovieModelComplete movie) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, movie.getTitle());
         contentValues.put(DIRECTOR, movie.getDirector());
@@ -42,7 +45,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     @NonNull
     public List<MovieModelComplete> getMoviesOrderedByDate() {
         List<MovieModelComplete> movies = new ArrayList<>();
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         try(Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP +" desc;", null)) {
             MovieModelComplete movie;
             while (cursor.moveToNext()) {
@@ -61,23 +64,8 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         return movies;
     }
 
-    private MovieDatabaseHelper(@NonNull Context context) {
-        super(context, DatabaseValueClass.DATABASE, null, DatabaseValueClass.DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String que = "CREATE TABLE " + TABLE + "(" + TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-                + TITLE + " Text, " + DIRECTOR + " Text, " + DESCRIPTION + " Text, " + POSTER + " TEXT);";
-        sqLiteDatabase.execSQL(que);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE + " ;");
-    }
-
     public void removeMovie(String title) {
-        getWritableDatabase().delete(TABLE, TITLE + "=\"" + title + "\"", null);
+        mDatabaseHelper.getWritableDatabase().delete(TABLE, TITLE + "=\"" + title + "\"", null);
     }
+
 }

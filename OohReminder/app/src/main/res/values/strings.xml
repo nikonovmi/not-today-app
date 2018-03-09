@@ -1,5 +1,5 @@
 <resources>
-    <string name="empty_string"/>
+    <string name="empty_string" />
     <string name="app_name">OohReminder</string>
     <string name="action_about">About</string>
     <string name="action_add">Add</string>
@@ -8,7 +8,7 @@
     <string name="book_author">Author: </string>
     <string name="button_add_book">Add a book</string>
     <string name="add_movie">Add movie</string>
-    <string name="add_hint">Enter the title</string>
+    <string name="add_title_hint">Enter the title</string>
     <string name="tmpdescription">So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!So nice movie wowow wowow would like to watch again!</string>
     <string name="delete_movie">Delete movie</string>
     <string name="sure_to_delete_movie">Are you sure you want to delete this movie?</string>
@@ -16,6 +16,8 @@
     <string name="cancel">Cancel</string>
     <string name="movie_complete_desc">Movie information</string>
     <string name="ok">Ok</string>
+    <string name="add_book">Add book</string>
+    <string name="add_author_hint" >Enter author names</string>
 
     <string-array name="navigation_tabs">
         <item>Movies</item>
