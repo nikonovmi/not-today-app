@@ -7,7 +7,7 @@ import android.view.View;
 
 import java.util.List;
 
-abstract class BasicContentRecyclerAdapter<T, S extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<S> {
+abstract class BasicContentRecyclerAdapter<T, S extends BasicContentRecyclerAdapter.BasicViewHolder> extends RecyclerView.Adapter<S> {
     @Nullable
     protected final ContentItemClickResolver mItemClickResolver;
     @NonNull
