@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.model.MovieModelComplete;
+import com.oohdev.oohreminder.core.MovieDataObject;
 
 import java.util.List;
 
-class MoviesRecyclerAdapter extends BasicContentRecyclerAdapter<MovieModelComplete, MoviesRecyclerAdapter.ViewHolder> {
-    MoviesRecyclerAdapter(@NonNull List<MovieModelComplete> movies, @Nullable ContentItemClickResolver clickResolver) {
+class MoviesRecyclerAdapter extends BasicContentRecyclerAdapter<MovieDataObject, MoviesRecyclerAdapter.ViewHolder> {
+    MoviesRecyclerAdapter(@NonNull List<MovieDataObject> movies, @Nullable ContentItemClickResolver clickResolver) {
         super(movies, clickResolver);
     }
 
@@ -25,10 +25,10 @@ class MoviesRecyclerAdapter extends BasicContentRecyclerAdapter<MovieModelComple
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MovieModelComplete model = mItems.get(position);
-        holder.movieTitle.setText(model.getTitle());
-        holder.movieDirector.setText(model.getDirector());
-        holder.movieDescription.setText(model.getDescription());
+        MovieDataObject movie = mItems.get(position);
+        holder.movieTitle.setText(movie.getTitle());
+        holder.movieDirector.setText(movie.getDirector());
+        holder.movieDescription.setText(movie.getDescription());
     }
 
 

@@ -1,6 +1,6 @@
-package com.oohdev.oohreminder.core.model;
+package com.oohdev.oohreminder.core;
 
-public class MovieModelComplete {
+public class MovieDataObject {
     private String mTitle;
     private String mDirector;
     private String mDescription;

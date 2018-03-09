@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.oohdev.oohreminder.core.model.MovieModelComplete;
+import com.oohdev.oohreminder.core.MovieDataObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class MoviesTable {
         mDatabaseHelper = DatabaseHelper.getInstance(context);
     }
 
-    public void insertMovie(@NonNull MovieModelComplete movie) {
+    public void insertMovie(@NonNull MovieDataObject movie) {
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, movie.getTitle());
@@ -43,13 +43,13 @@ public class MoviesTable {
     }
 
     @NonNull
-    public List<MovieModelComplete> getMoviesOrderedByDate() {
-        List<MovieModelComplete> movies = new ArrayList<>();
+    public List<MovieDataObject> getMoviesOrderedByDate() {
+        List<MovieDataObject> movies = new ArrayList<>();
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         try(Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP +" desc;", null)) {
-            MovieModelComplete movie;
+            MovieDataObject movie;
             while (cursor.moveToNext()) {
-                movie = new MovieModelComplete();
+                movie = new MovieDataObject();
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE));
                 String director = cursor.getString(cursor.getColumnIndexOrThrow(DIRECTOR));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(DESCRIPTION));

@@ -18,7 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.core.api.MovieApiHelper;
 import com.oohdev.oohreminder.core.db.MoviesTable;
-import com.oohdev.oohreminder.core.model.MovieModelComplete;
+import com.oohdev.oohreminder.core.MovieDataObject;
 import com.squareup.picasso.Picasso;
 
 import junit.framework.Assert;
@@ -90,7 +90,7 @@ public class MoviesFragment extends ContentFragment {
         mRecyclerAdapter.replaceItems(mMoviesTable.getMoviesOrderedByDate());
     }
 
-    private void updateRecycler(@NonNull MovieModelComplete movie) {
+    private void updateRecycler(@NonNull MovieDataObject movie) {
         mRecyclerAdapter.addItem(movie);
         mRecyclerView.scrollToPosition(0);
     }
@@ -117,7 +117,7 @@ public class MoviesFragment extends ContentFragment {
 
         @Override
         public void onClick(int item) {
-            final MovieModelComplete movie = mRecyclerAdapter.getItems().get(item);
+            final MovieDataObject movie = mRecyclerAdapter.getItems().get(item);
             Assert.assertNotNull(getContext());
             MaterialDialog completeInfoDialog = new MaterialDialog.Builder(getContext())
                     .title(R.string.movie_complete_desc)
@@ -147,7 +147,7 @@ public class MoviesFragment extends ContentFragment {
     }
 
     // static modifier and WeakReference logic are required to avoid memory leak: goo.gl/hy74u2
-    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieModelComplete> {
+    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieDataObject> {
         private final WeakReference<MoviesFragment> moviesFragmentRef;
         private final String mTitle;
         private final String mDirector;
@@ -162,12 +162,12 @@ public class MoviesFragment extends ContentFragment {
 
         @Override
         @NonNull
-        protected MovieModelComplete doInBackground(Void... voids) {
-            return MovieApiHelper.getMovieModel(mTitle, mDirector, mDescription);
+        protected MovieDataObject doInBackground(Void... voids) {
+            return MovieApiHelper.getMovieDataObj(mTitle, mDirector, mDescription);
         }
 
         @Override
-        protected void onPostExecute(@NonNull MovieModelComplete movie) {
+        protected void onPostExecute(@NonNull MovieDataObject movie) {
             MoviesFragment fragment = moviesFragmentRef.get();
             if (fragment == null || fragment.getContext() == null) {
                 return;

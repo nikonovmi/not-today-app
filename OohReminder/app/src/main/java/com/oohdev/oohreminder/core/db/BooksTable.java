@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.oohdev.oohreminder.core.model.BookModelComplete;
+import com.oohdev.oohreminder.core.BookDataObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class BooksTable {
         mDatabaseHelper = DatabaseHelper.getInstance(context);
     }
 
-    public void addBook(@NonNull BookModelComplete book) {
+    public void addBook(@NonNull BookDataObject book) {
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE, book.getTitle());
@@ -41,12 +41,12 @@ public class BooksTable {
     }
 
     @NonNull
-    public List<BookModelComplete> getBooksOrderedByDate() {
-        List<BookModelComplete> books = new ArrayList<>();
+    public List<BookDataObject> getBooksOrderedByDate() {
+        List<BookDataObject> books = new ArrayList<>();
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         try (Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP + " desc;", null)) {
             while (cursor.moveToNext()) {
-                books.add(new BookModelComplete(
+                books.add(new BookDataObject(
                         cursor.getString(cursor.getColumnIndexOrThrow(TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(AUTHOR)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COVER_URL))));
@@ -55,4 +55,7 @@ public class BooksTable {
         return books;
     }
 
+    public void removeBook(String title) {
+        mDatabaseHelper.getWritableDatabase().delete(TABLE, TITLE + "=\"" + title + "\"", null);
+    }
 }

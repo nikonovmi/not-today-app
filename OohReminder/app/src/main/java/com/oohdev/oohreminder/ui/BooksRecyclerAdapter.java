@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.model.BookModelComplete;
+import com.oohdev.oohreminder.core.BookDataObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-class BooksRecyclerAdapter extends BasicContentRecyclerAdapter<BookModelComplete, BooksRecyclerAdapter.ViewHolder> {
+class BooksRecyclerAdapter extends BasicContentRecyclerAdapter<BookDataObject, BooksRecyclerAdapter.ViewHolder> {
     private final Context mContext;
 
-    BooksRecyclerAdapter(@NonNull Context context, @NonNull List<BookModelComplete> books, @Nullable ContentItemClickResolver clickResolver) {
+    BooksRecyclerAdapter(@NonNull Context context, @NonNull List<BookDataObject> books, @Nullable ContentItemClickResolver clickResolver) {
         super(books, clickResolver);
         mContext = context;
     }
@@ -31,7 +31,7 @@ class BooksRecyclerAdapter extends BasicContentRecyclerAdapter<BookModelComplete
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        BookModelComplete book = mItems.get(position);
+        BookDataObject book = mItems.get(position);
         holder.bookAuthor.setText(book.getAuthor());
         holder.bookTitle.setText(book.getTitle());
         if (!book.getCoverUrl().isEmpty()) {

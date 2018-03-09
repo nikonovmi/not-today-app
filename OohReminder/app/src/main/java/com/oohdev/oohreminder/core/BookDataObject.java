@@ -1,8 +1,8 @@
-package com.oohdev.oohreminder.core.model;
+package com.oohdev.oohreminder.core;
 
 import android.support.annotation.NonNull;
 
-public class BookModelComplete {
+public class BookDataObject {
     @NonNull
     private String mTitle;
     @NonNull
@@ -10,19 +10,19 @@ public class BookModelComplete {
     @NonNull
     private String mCoverUrl;
 
-    public BookModelComplete() {
+    public BookDataObject() {
         mTitle = "";
         mAuthor = "";
         mCoverUrl = "";
     }
 
-    public BookModelComplete(@NonNull String title, @NonNull String author) {
+    public BookDataObject(@NonNull String title, @NonNull String author) {
         mTitle = title;
         mAuthor = author;
         mCoverUrl = "";
     }
 
-    public BookModelComplete(@NonNull String title, @NonNull String author, @NonNull String coverUrl) {
+    public BookDataObject(@NonNull String title, @NonNull String author, @NonNull String coverUrl) {
         mTitle = title;
         mAuthor = author;
         mCoverUrl = coverUrl;

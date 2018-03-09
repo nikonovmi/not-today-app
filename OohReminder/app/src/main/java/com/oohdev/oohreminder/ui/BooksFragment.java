@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
+import com.oohdev.oohreminder.core.BookDataObject;
+import com.oohdev.oohreminder.core.api.BookApiHelper;
 import com.oohdev.oohreminder.core.db.BooksTable;
-import com.oohdev.oohreminder.core.model.BookModelComplete;
 
 import junit.framework.Assert;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class BooksFragment extends ContentFragment {
@@ -53,7 +55,7 @@ public class BooksFragment extends ContentFragment {
         mItemClickResolver = new BookItemClickResolver();
         mRecyclerView = view.findViewById(R.id.books_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<BookModelComplete>(), mItemClickResolver);
+        mRecyclerAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<BookDataObject>(), mItemClickResolver);
         mRecyclerView.setAdapter(mRecyclerAdapter);
         updateRecycler();
     }
@@ -61,7 +63,7 @@ public class BooksFragment extends ContentFragment {
     @Override
     public void addElement() {
         Assert.assertNotNull(getContext());
-        final BookModelComplete book = new BookModelComplete();
+        final BooksFragment currentFragment = this;
         new MaterialDialog.Builder(getContext())
                 .title(R.string.add_book)
                 .inputRange(2, 30)
@@ -69,9 +71,7 @@ public class BooksFragment extends ContentFragment {
                 .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        book.setTitle(input.toString());
-                        mBooksTable.addBook(book);
-                        updateRecycler(book);
+                        BookApiHelper.getBookDataObj(input.toString(), "unknown", new GetBookInfoHandler(currentFragment));
                     }
                 }).show();
     }
@@ -80,20 +80,54 @@ public class BooksFragment extends ContentFragment {
         mRecyclerAdapter.replaceItems(mBooksTable.getBooksOrderedByDate());
     }
 
-    private void updateRecycler(BookModelComplete bookModelComplete) {
-        mRecyclerAdapter.addItem(bookModelComplete);
+    private void updateRecycler(BookDataObject book) {
+        mRecyclerAdapter.addItem(book);
         mRecyclerView.scrollToPosition(0);
     }
 
     private class BookItemClickResolver implements ContentItemClickResolver {
 
         @Override
-        public boolean onLongClick(int item) {
-            return false;
+        public boolean onLongClick(final int item) {
+            final String itemTitle = mRecyclerAdapter.getItems().get(item).getTitle();
+            Assert.assertNotNull(getContext());
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.delete_book)
+                    .content(R.string.sure_to_delete_book)
+                    .positiveText(R.string.delete)
+                    .negativeText(R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            mRecyclerAdapter.removeItem(item);
+                            mBooksTable.removeBook(itemTitle);
+                        }
+                    }).show();
+            return true;
         }
 
         @Override
         public void onClick(int item) {
+        }
+    }
+
+    private static class GetBookInfoHandler implements BookApiHelper.ResultHandler {
+        private final WeakReference<BooksFragment> mBooksFragmentWeakReference;
+
+        GetBookInfoHandler(@NonNull BooksFragment booksFragment) {
+            mBooksFragmentWeakReference = new WeakReference<BooksFragment>(booksFragment);
+        }
+
+        @Override
+        public void onResult(@NonNull BookDataObject bookDataObject, boolean isFailed) {
+            BooksFragment fragment = mBooksFragmentWeakReference.get();
+            if (fragment == null || fragment.getContext() == null) {
+                return;
+            }
+            new BooksTable(fragment.getContext()).addBook(bookDataObject);
+            if (fragment.isResumed()) {
+                fragment.updateRecycler(bookDataObject);
+            }
         }
     }
 }
