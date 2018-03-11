@@ -4,6 +4,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 class OpenLibSearchAPIClient {
+    static final String COVER_URL_PREFIX = "http://covers.openlibrary.org/b/id/";
+    static final String COVER_URL_SUFFIX = "-M.jpg";
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "http://openlibrary.org/";
 

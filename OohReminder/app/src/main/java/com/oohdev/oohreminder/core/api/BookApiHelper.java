@@ -10,7 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookApiHelper {
-    @NonNull
+
     public static void getBookDataObj(@NonNull String title, @NonNull String defAuthor, @NonNull final ResultHandler resultHandler) {
         final BookDataObject result = new BookDataObject(title, defAuthor);
         OpenLibSearchInterface searchInterface = OpenLibSearchAPIClient.getRetrofitInstance().create(OpenLibSearchInterface.class);
@@ -23,6 +23,9 @@ public class BookApiHelper {
                     if (entry.authors.size() > 0) {
                         result.setAuthor(entry.authors.get(0));
                     }
+                    if (entry.coverId != null) {
+                        result.setCoverUrl(getCoverUrlFromCoverId(entry.coverId));
+                    }
                 }
                 resultHandler.onResult(result, false);
             }
@@ -33,6 +36,11 @@ public class BookApiHelper {
                 resultHandler.onResult(result, true);
             }
         });
+    }
+
+    @NonNull
+    private static String getCoverUrlFromCoverId(int coverId) {
+        return OpenLibSearchAPIClient.COVER_URL_PREFIX + Integer.toString(coverId) + OpenLibSearchAPIClient.COVER_URL_SUFFIX;
     }
 
     public interface ResultHandler {

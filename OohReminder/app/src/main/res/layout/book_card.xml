@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="false"
+
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
@@ -41,7 +42,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/base_card_text_size_L" />
+                android:textSize="@dimen/base_card_text_size_L"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"

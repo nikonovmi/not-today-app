@@ -27,5 +27,7 @@ public class OpenLibSearch {
         @SerializedName("author_name")
         public List<String> authors = new ArrayList<>();
 
+        @SerializedName("cover_i")
+        public Integer coverId = null;
     }
 }
