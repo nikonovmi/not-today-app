@@ -1,3 +1,3 @@
-# ifmo-android-oohreminder
+# not-today-app
 
-Android app which provides opportunity to save all books and films you want to read/watch later.
+Android app which provides an opportunity to save all books, films and music you want to read/watch/listen later.
