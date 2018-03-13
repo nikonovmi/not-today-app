@@ -71,7 +71,7 @@ public class BooksFragment extends ContentFragment {
                 .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        BookApiHelper.getBookDataObj(input.toString(), "unknown", new GetBookInfoHandler(currentFragment));
+                        BookApiHelper.getBookDataObj(input.toString(), getString(R.string.unknown), new GetBookInfoHandler(currentFragment));
                     }
                 }).show();
     }

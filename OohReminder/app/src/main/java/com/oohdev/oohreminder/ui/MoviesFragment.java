@@ -81,7 +81,8 @@ public class MoviesFragment extends ContentFragment {
                 .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        new GetMovieInfoTask(currentFragment, input.toString(), "unknown", "no description").execute();
+                        new GetMovieInfoTask(currentFragment, input.toString(),
+                                getString(R.string.unknown), getString(R.string.no_description)).execute();
                     }
                 }).show();
     }

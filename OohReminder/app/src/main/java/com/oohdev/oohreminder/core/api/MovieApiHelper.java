@@ -18,11 +18,7 @@ public class MovieApiHelper {
     private static final String POSTER_URL_PREFIX = "http://image.tmdb.org/t/p/w185";
 
     public static MovieDataObject getMovieDataObj(@NonNull String title, @NonNull String defaultDirector, @NonNull String defaultDesc) {
-        MovieDataObject movie = new MovieDataObject();
-        movie.setTitle(title);
-        movie.setDirector(defaultDirector);
-        movie.setDescription(defaultDesc);
-        movie.setPosterUrl("");
+        MovieDataObject movie = new MovieDataObject(title, defaultDirector, defaultDesc);
 
         try {
             TmdbApi api = new TmdbApi(APIKEY);

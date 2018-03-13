@@ -46,18 +46,13 @@ public class MoviesTable {
     public List<MovieDataObject> getMoviesOrderedByDate() {
         List<MovieDataObject> movies = new ArrayList<>();
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
-        try(Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP +" desc;", null)) {
+        try (Cursor cursor = db.rawQuery("select * from " + TABLE + " order by " + TIMESTAMP + " desc;", null)) {
             MovieDataObject movie;
             while (cursor.moveToNext()) {
-                movie = new MovieDataObject();
-                String title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE));
-                String director = cursor.getString(cursor.getColumnIndexOrThrow(DIRECTOR));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(DESCRIPTION));
-                String poster = cursor.getString(cursor.getColumnIndexOrThrow(POSTER));
-                movie.setTitle(title);
-                movie.setDirector(director);
-                movie.setDescription(description);
-                movie.setPosterUrl(poster);
+                movie = new MovieDataObject(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DIRECTOR)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DESCRIPTION)));
+                movie.setPosterUrl(cursor.getString(cursor.getColumnIndexOrThrow(POSTER)));
                 movies.add(movie);
             }
         }

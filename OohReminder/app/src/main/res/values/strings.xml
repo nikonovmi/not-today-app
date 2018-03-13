@@ -1,6 +1,6 @@
 <resources>
     <string name="empty_string" />
-    <string name="app_name">OohReminder</string>
+    <string name="app_name">NOT Today</string>
     <string name="action_about">About</string>
     <string name="action_add">Add</string>
     <string name="directed_by">Directed by: </string>
@@ -20,6 +20,8 @@
     <string name="ok">Ok</string>
     <string name="add_book">Add book</string>
     <string name="add_author_hint" >Enter author names</string>
+    <string name="unknown">unknown</string>
+    <string name="no_description">no description</string>
 
     <string-array name="navigation_tabs">
         <item>Movies</item>
