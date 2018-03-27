@@ -1,6 +1,7 @@
 package com.oohdev.oohreminder.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ public class MusicFragment extends ContentFragment {
 
     @Override
     public void addElement() {
-
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivityForResult(intent, 3);
     }
 }
