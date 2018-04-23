@@ -9,4 +9,5 @@
     <color name="colorFabMusic">#ffcc80</color>
     <color name="colorWindowBackground">#eceff1</color>
     <color name="colorPosterBackground">#efebe9</color>
+    <color name="colorBaseCardSeparator">#daddde</color>
 </resources>

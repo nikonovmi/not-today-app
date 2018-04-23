@@ -10,8 +10,10 @@
     <dimen name="movie_poster_width">85dp</dimen>
     <dimen name="book_cover_height">90dp</dimen>
     <dimen name="book_cover_width">60dp</dimen>
+    <dimen name="search_image_height">60dp</dimen>
+    <dimen name="search_image_width">45dp</dimen>
 
-    <!-- Search bar-->
+    <!-- Search bar -->
     <dimen name="searchbar_icon_size">32dp</dimen>
     <dimen name="searchbar_icon_padding">8dp</dimen>
     <dimen name="searchbar_content_inset">12dp</dimen>

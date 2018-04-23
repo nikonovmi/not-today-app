@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SearchActivity">
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".ui.search.SearchActivity">
+
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_search"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:contentInsetEnd="0dp"
         android:contentInsetLeft="0dp"
         android:contentInsetRight="0dp"
@@ -22,7 +25,7 @@
         app:contentInsetStart="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <com.oohdev.oohreminder.ui.SearchBarView
+        <com.oohdev.oohreminder.ui.search.SearchBarView
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,10 +35,14 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Search activity" />
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>

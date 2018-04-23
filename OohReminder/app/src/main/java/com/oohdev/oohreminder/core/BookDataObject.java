@@ -1,8 +1,12 @@
 package com.oohdev.oohreminder.core;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-public class BookDataObject {
+import com.oohdev.oohreminder.R;
+import com.oohdev.oohreminder.core.api.search.SearchDataObject;
+
+public class BookDataObject extends SearchDataObject {
     @NonNull
     private String mTitle;
     @NonNull
@@ -53,5 +57,29 @@ public class BookDataObject {
 
     public void setCoverUrl(@NonNull String coverUrl) {
         mCoverUrl = coverUrl;
+    }
+
+    @NonNull
+    @Override
+    public String getPrimaryDescription() {
+        return getTitle();
+    }
+
+    @NonNull
+    @Override
+    public String getSecondaryDescription() {
+        return getAuthor();
+    }
+
+    @NonNull
+    @Override
+    public String getImageUrl() {
+        return getCoverUrl();
+    }
+
+    @Override
+    @DrawableRes
+    public int getDefaultImageId() {
+        return R.drawable.unknown_book;
     }
 }

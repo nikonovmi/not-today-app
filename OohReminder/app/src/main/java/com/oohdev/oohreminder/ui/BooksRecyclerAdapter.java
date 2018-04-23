@@ -32,31 +32,31 @@ class BooksRecyclerAdapter extends BasicContentRecyclerAdapter<BookDataObject, B
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         BookDataObject book = mItems.get(position);
-        holder.bookAuthor.setText(book.getAuthor());
-        holder.bookTitle.setText(book.getTitle());
+        holder.mBookAuthor.setText(book.getAuthor());
+        holder.mBookTitle.setText(book.getTitle());
         if (!book.getCoverUrl().isEmpty()) {
             Picasso.with(mContext)
                     .load(book.getCoverUrl())
                     .error(R.drawable.unknown_book)
-                    .into(holder.bookCover);
+                    .into(holder.mBookCover);
         } else {
             Picasso.with(mContext)
                     .load(R.drawable.unknown_book)
-                    .into(holder.bookCover);
+                    .into(holder.mBookCover);
         }
 
     }
 
     class ViewHolder extends BasicContentRecyclerAdapter.BasicViewHolder {
-        private final TextView bookTitle;
-        private final TextView bookAuthor;
-        private final AppCompatImageView bookCover;
+        private final TextView mBookTitle;
+        private final TextView mBookAuthor;
+        private final AppCompatImageView mBookCover;
 
         ViewHolder(View itemView) {
             super(itemView);
-            bookTitle = itemView.findViewById(R.id.book_title);
-            bookAuthor = itemView.findViewById(R.id.book_author);
-            bookCover = itemView.findViewById(R.id.book_cover);
+            mBookTitle = itemView.findViewById(R.id.book_title);
+            mBookAuthor = itemView.findViewById(R.id.book_author);
+            mBookCover = itemView.findViewById(R.id.book_cover);
         }
     }
 

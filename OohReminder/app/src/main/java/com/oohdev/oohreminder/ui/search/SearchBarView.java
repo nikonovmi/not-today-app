@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.ui;
+package com.oohdev.oohreminder.ui.search;
 
 import android.content.Context;
 import android.content.res.TypedArray;

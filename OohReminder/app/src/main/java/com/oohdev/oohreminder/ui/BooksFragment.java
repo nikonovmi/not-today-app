@@ -1,6 +1,7 @@
 package com.oohdev.oohreminder.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.core.BookDataObject;
 import com.oohdev.oohreminder.core.api.BookApiHelper;
+import com.oohdev.oohreminder.core.api.search.BookSearchProvider;
+import com.oohdev.oohreminder.core.api.search.SearchProvider;
 import com.oohdev.oohreminder.core.db.BooksTable;
+import com.oohdev.oohreminder.ui.search.SearchActivity;
 
 import junit.framework.Assert;
 
@@ -62,18 +66,14 @@ public class BooksFragment extends ContentFragment {
 
     @Override
     public void addElement() {
-        Assert.assertNotNull(getContext());
-        final BooksFragment currentFragment = this;
-        new MaterialDialog.Builder(getContext())
-                .title(R.string.add_book)
-                .inputRange(2, 30)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        BookApiHelper.getBookDataObj(input.toString(), getString(R.string.unknown), new GetBookInfoHandler(currentFragment));
-                    }
-                }).show();
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+    @NonNull
+    @Override
+    SearchProvider getSearchProvider() {
+        return new BookSearchProvider();
     }
 
     private void updateRecycler() {

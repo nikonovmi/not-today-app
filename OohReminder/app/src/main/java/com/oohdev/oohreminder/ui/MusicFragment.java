@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oohdev.oohreminder.R;
+import com.oohdev.oohreminder.core.api.search.MusicSearchProvider;
+import com.oohdev.oohreminder.core.api.search.SearchProvider;
+import com.oohdev.oohreminder.ui.search.SearchActivity;
 
 public class MusicFragment extends ContentFragment {
     public static MusicFragment newInstance() {
@@ -33,6 +36,12 @@ public class MusicFragment extends ContentFragment {
     @Override
     public void addElement() {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        startActivityForResult(intent, 3);
+        startActivityForResult(intent, 0);
+    }
+
+    @NonNull
+    @Override
+    SearchProvider getSearchProvider() {
+        return new MusicSearchProvider();
     }
 }
