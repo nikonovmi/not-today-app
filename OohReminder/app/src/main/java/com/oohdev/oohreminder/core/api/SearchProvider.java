@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.core.api.search;
+package com.oohdev.oohreminder.core.api;
 
 import android.support.annotation.NonNull;
 
@@ -9,8 +9,11 @@ public interface SearchProvider {
 
     void unSubscribe();
 
+    @NonNull
+    SearchDataObject buildSearchDataObject(@NonNull String title);
+
     interface Callback {
-        void onSuccess(@NonNull List<SearchDataObject> searchResults, @NonNull SearchDataObject plainSearchQuery);
+        void onSuccess(@NonNull List<? extends SearchDataObject> searchResults, @NonNull String searchQuery);
         void onFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery);
     }
 }

@@ -8,8 +8,8 @@
     <dimen name="base_card_text_size_M">16sp</dimen>
     <dimen name="movie_poster_height">120dp</dimen>
     <dimen name="movie_poster_width">85dp</dimen>
-    <dimen name="book_cover_height">90dp</dimen>
-    <dimen name="book_cover_width">60dp</dimen>
+    <dimen name="book_cover_height">80dp</dimen>
+    <dimen name="book_cover_width">55dp</dimen>
     <dimen name="search_image_height">60dp</dimen>
     <dimen name="search_image_width">45dp</dimen>
 

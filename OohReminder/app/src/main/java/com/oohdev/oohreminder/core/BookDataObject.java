@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.api.search.SearchDataObject;
+import com.oohdev.oohreminder.core.api.SearchDataObject;
 
 public class BookDataObject extends SearchDataObject {
     @NonNull
@@ -16,6 +16,12 @@ public class BookDataObject extends SearchDataObject {
 
     public BookDataObject() {
         mTitle = "";
+        mAuthor = "";
+        mCoverUrl = "";
+    }
+
+    public BookDataObject(@NonNull String title) {
+        mTitle = title;
         mAuthor = "";
         mCoverUrl = "";
     }

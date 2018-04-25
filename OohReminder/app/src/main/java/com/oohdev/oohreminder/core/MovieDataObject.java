@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.api.search.SearchDataObject;
+import com.oohdev.oohreminder.core.api.SearchDataObject;
 
 public class MovieDataObject extends SearchDataObject {
     @NonNull

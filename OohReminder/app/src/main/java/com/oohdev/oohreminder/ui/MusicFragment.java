@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.api.search.MusicSearchProvider;
-import com.oohdev.oohreminder.core.api.search.SearchProvider;
+import com.oohdev.oohreminder.core.api.music.MusicSearchProvider;
+import com.oohdev.oohreminder.core.api.SearchProvider;
 import com.oohdev.oohreminder.ui.search.SearchActivity;
 
 public class MusicFragment extends ContentFragment {

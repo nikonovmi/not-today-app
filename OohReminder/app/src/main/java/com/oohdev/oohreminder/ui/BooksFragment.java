@@ -1,33 +1,33 @@
 package com.oohdev.oohreminder.ui;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.core.BookDataObject;
-import com.oohdev.oohreminder.core.api.BookApiHelper;
-import com.oohdev.oohreminder.core.api.search.BookSearchProvider;
-import com.oohdev.oohreminder.core.api.search.SearchProvider;
+import com.oohdev.oohreminder.core.MovieDataObject;
+import com.oohdev.oohreminder.core.api.SearchProvider;
+import com.oohdev.oohreminder.core.api.books.BookSearchProvider;
 import com.oohdev.oohreminder.core.db.BooksTable;
 import com.oohdev.oohreminder.ui.search.SearchActivity;
 
 import junit.framework.Assert;
 
-import java.lang.ref.WeakReference;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BooksFragment extends ContentFragment {
+    private static final int BOOKS_FRAGMENT_REQUEST_CODE = 2;
     private BooksTable mBooksTable;
     private RecyclerView mRecyclerView;
     private BooksRecyclerAdapter mRecyclerAdapter;
@@ -67,7 +67,7 @@ public class BooksFragment extends ContentFragment {
     @Override
     public void addElement() {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, BOOKS_FRAGMENT_REQUEST_CODE);
     }
 
     @NonNull
@@ -85,6 +85,21 @@ public class BooksFragment extends ContentFragment {
         mRecyclerView.scrollToPosition(0);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BOOKS_FRAGMENT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Serializable searchResult = data.getSerializableExtra(SearchActivity.SEARCH_RESULT_KEY);
+                if (searchResult != null && BookDataObject.class.isInstance(searchResult)) {
+                    BookDataObject bookDataObject = (BookDataObject) searchResult;
+                    mBooksTable.addBook(bookDataObject);
+                    updateRecycler(bookDataObject);
+                }
+            }
+        }
+    }
+
     private class BookItemClickResolver implements ContentItemClickResolver {
 
         @Override
@@ -96,38 +111,15 @@ public class BooksFragment extends ContentFragment {
                     .content(R.string.sure_to_delete_book)
                     .positiveText(R.string.delete)
                     .negativeText(R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            mRecyclerAdapter.removeItem(item);
-                            mBooksTable.removeBook(itemTitle);
-                        }
+                    .onPositive((dialog, which) -> {
+                        mRecyclerAdapter.removeItem(item);
+                        mBooksTable.removeBook(itemTitle);
                     }).show();
             return true;
         }
 
         @Override
         public void onClick(int item) {
-        }
-    }
-
-    private static class GetBookInfoHandler implements BookApiHelper.ResultHandler {
-        private final WeakReference<BooksFragment> mBooksFragmentWeakReference;
-
-        GetBookInfoHandler(@NonNull BooksFragment booksFragment) {
-            mBooksFragmentWeakReference = new WeakReference<BooksFragment>(booksFragment);
-        }
-
-        @Override
-        public void onResult(@NonNull BookDataObject bookDataObject, boolean isFailed) {
-            BooksFragment fragment = mBooksFragmentWeakReference.get();
-            if (fragment == null || fragment.getContext() == null) {
-                return;
-            }
-            new BooksTable(fragment.getContext()).addBook(bookDataObject);
-            if (fragment.isResumed()) {
-                fragment.updateRecycler(bookDataObject);
-            }
         }
     }
 }

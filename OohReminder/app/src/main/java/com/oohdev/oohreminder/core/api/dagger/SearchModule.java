@@ -1,8 +1,8 @@
-package com.oohdev.oohreminder.core.api.search.dagger;
+package com.oohdev.oohreminder.core.api.dagger;
 
 import android.support.annotation.NonNull;
 
-import com.oohdev.oohreminder.core.api.search.SearchProvider;
+import com.oohdev.oohreminder.core.api.SearchProvider;
 
 import dagger.Module;
 import dagger.Provides;

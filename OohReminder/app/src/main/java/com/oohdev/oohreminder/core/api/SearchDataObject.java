@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.core.api.search;
+package com.oohdev.oohreminder.core.api;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
