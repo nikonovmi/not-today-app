@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/search_bar_back_icon"
+        android:layout_width="@dimen/searchbar_icon_size"
+        android:layout_height="@dimen/searchbar_icon_size"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/searchbar_icon_padding" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/search_bar_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:textCursorDrawable="@drawable/color_search_input_cursor"
+        android:layout_marginStart="@dimen/searchbar_input_margin_start"
+        android:layout_marginEnd="@dimen/searchbar_input_margin_end"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:maxLines="1"
+        android:minLines="1"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:scrollHorizontally="true" >
+        <requestFocus />
+    </android.support.v7.widget.AppCompatEditText>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/search_bar_clear_icon"
+        android:layout_width="@dimen/searchbar_icon_size"
+        android:layout_height="@dimen/searchbar_icon_size"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/searchbar_icon_padding" />
+
+</merge>

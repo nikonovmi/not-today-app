@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.api.MovieApiHelper;
+import com.oohdev.oohreminder.core.api.movies.MovieApiHelper;
+import com.oohdev.oohreminder.core.api.movies.MovieSearchProvider;
+import com.oohdev.oohreminder.core.api.SearchProvider;
 import com.oohdev.oohreminder.core.db.MoviesTable;
 import com.oohdev.oohreminder.core.MovieDataObject;
 import com.squareup.picasso.Picasso;
@@ -85,6 +87,12 @@ public class MoviesFragment extends ContentFragment {
                                 getString(R.string.unknown), getString(R.string.no_description)).execute();
                     }
                 }).show();
+    }
+
+    @NonNull
+    @Override
+    SearchProvider getSearchProvider() {
+        return new MovieSearchProvider();
     }
 
     private void updateRecycler() {

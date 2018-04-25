@@ -22,10 +22,13 @@
     <string name="add_author_hint" >Enter author names</string>
     <string name="unknown">unknown</string>
     <string name="no_description">no description</string>
-
     <string-array name="navigation_tabs">
         <item>Movies</item>
         <item>Books</item>
         <item>Music</item>
     </string-array>
+
+    <!--Search bar-->
+    <string name="search_hint">Search</string>
+
 </resources>

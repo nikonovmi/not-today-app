@@ -1,4 +1,4 @@
-package com.oohdev.oohreminder.core.api;
+package com.oohdev.oohreminder.core.api.movies;
 
 import android.support.annotation.NonNull;
 

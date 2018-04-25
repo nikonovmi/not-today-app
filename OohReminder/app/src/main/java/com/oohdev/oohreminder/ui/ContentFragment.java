@@ -1,7 +1,13 @@
 package com.oohdev.oohreminder.ui;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.oohdev.oohreminder.core.api.SearchProvider;
+
 public abstract class ContentFragment extends Fragment {
-    public abstract void addElement();
+    abstract void addElement();
+
+    @NonNull
+    abstract SearchProvider getSearchProvider();
 }

@@ -24,6 +24,9 @@ public class OpenLibSearch {
 
 
     public static class Entry {
+        @SerializedName("title")
+        public String title = null;
+
         @SerializedName("author_name")
         public List<String> authors = new ArrayList<>();
 

@@ -1,8 +1,12 @@
 package com.oohdev.oohreminder.core;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-public class MovieDataObject {
+import com.oohdev.oohreminder.R;
+import com.oohdev.oohreminder.core.api.SearchDataObject;
+
+public class MovieDataObject extends SearchDataObject {
     @NonNull
     private String mTitle;
     @NonNull
@@ -60,5 +64,29 @@ public class MovieDataObject {
 
     public void setPosterUrl(@NonNull String posterUrl) {
         mPosterUrl = posterUrl;
+    }
+
+    @NonNull
+    @Override
+    public String getPrimaryDescription() {
+        return getTitle();
+    }
+
+    @NonNull
+    @Override
+    public String getSecondaryDescription() {
+        return getDescription();
+    }
+
+    @NonNull
+    @Override
+    public String getImageUrl() {
+        return mPosterUrl;
+    }
+
+    @Override
+    @DrawableRes
+    public int getDefaultImageId() {
+        return R.drawable.unknown_movie;
     }
 }
