@@ -15,9 +15,18 @@ public class MovieDataObject extends SearchDataObject {
     private String mDescription;
     @NonNull
     private String mPosterUrl;
+    @NonNull
+    private String mReleaseDate = "";
 
     public MovieDataObject() {
         mTitle = "";
+        mDirector = "";
+        mDescription = "";
+        mPosterUrl = "";
+    }
+
+    public MovieDataObject(@NonNull String title) {
+        mTitle = title;
         mDirector = "";
         mDescription = "";
         mPosterUrl = "";
@@ -75,7 +84,7 @@ public class MovieDataObject extends SearchDataObject {
     @NonNull
     @Override
     public String getSecondaryDescription() {
-        return getDescription();
+        return getDirector();
     }
 
     @NonNull
@@ -88,5 +97,14 @@ public class MovieDataObject extends SearchDataObject {
     @DrawableRes
     public int getDefaultImageId() {
         return R.drawable.unknown_movie;
+    }
+
+    @NonNull
+    public String getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    public void setReleaseDate(@NonNull String releaseDate) {
+        this.mReleaseDate = releaseDate;
     }
 }

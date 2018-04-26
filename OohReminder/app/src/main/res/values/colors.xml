@@ -10,4 +10,5 @@
     <color name="colorWindowBackground">#eceff1</color>
     <color name="colorPosterBackground">#efebe9</color>
     <color name="colorBaseCardSeparator">#daddde</color>
+    <color name="colorSearchProgressBar">#98a0ac</color>
 </resources>

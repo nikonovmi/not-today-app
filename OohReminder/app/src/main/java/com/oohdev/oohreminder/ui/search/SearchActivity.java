@@ -139,8 +139,8 @@ public class SearchActivity extends AppCompatActivity implements SearchProvider.
     @Override
     public void onFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery) {
         mSearchRecyclerAdapter.clear();
-        Toast.makeText(this, failure.toString(), Toast.LENGTH_LONG).show();
         mSearchRecyclerAdapter.addItems(Collections.singletonList(plainSearchQuery));
+        //TODO understand failure
         hideProgressBar();
     }
 
