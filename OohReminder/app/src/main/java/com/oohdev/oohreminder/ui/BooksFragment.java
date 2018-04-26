@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
 import com.oohdev.oohreminder.core.BookDataObject;
-import com.oohdev.oohreminder.core.MovieDataObject;
 import com.oohdev.oohreminder.core.api.SearchProvider;
 import com.oohdev.oohreminder.core.api.books.BookSearchProvider;
 import com.oohdev.oohreminder.core.db.BooksTable;
@@ -31,7 +30,6 @@ public class BooksFragment extends ContentFragment {
     private BooksTable mBooksTable;
     private RecyclerView mRecyclerView;
     private BooksRecyclerAdapter mRecyclerAdapter;
-    private BookItemClickResolver mItemClickResolver;
 
     public static BooksFragment newInstance() {
         Bundle args = new Bundle();
@@ -56,10 +54,10 @@ public class BooksFragment extends ContentFragment {
         super.onViewCreated(view, savedInstanceState);
         Assert.assertNotNull(getContext());
         mBooksTable = new BooksTable(getContext());
-        mItemClickResolver = new BookItemClickResolver();
         mRecyclerView = view.findViewById(R.id.books_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<BookDataObject>(), mItemClickResolver);
+        BookItemClickResolver bookItemClickResolver = new BookItemClickResolver();
+        mRecyclerAdapter = new BooksRecyclerAdapter(getContext(), new ArrayList<>(), bookItemClickResolver);
         mRecyclerView.setAdapter(mRecyclerAdapter);
         updateRecycler();
     }
