@@ -1,13 +1,13 @@
 package com.oohdev.oohreminder.ui;
 
-import android.os.AsyncTask;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +16,23 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.oohdev.oohreminder.R;
-import com.oohdev.oohreminder.core.api.movies.MovieApiHelper;
 import com.oohdev.oohreminder.core.api.movies.MovieSearchProvider;
 import com.oohdev.oohreminder.core.api.SearchProvider;
 import com.oohdev.oohreminder.core.db.MoviesTable;
 import com.oohdev.oohreminder.core.MovieDataObject;
+import com.oohdev.oohreminder.ui.search.SearchActivity;
 import com.squareup.picasso.Picasso;
 
 import junit.framework.Assert;
 
-import java.lang.ref.WeakReference;
+import java.io.Serializable;
 
 public class MoviesFragment extends ContentFragment {
+    private static final int MOVIES_FRAGMENT_REQUEST_CODE = 1;
+
     private RecyclerView mRecyclerView;
     private MoviesRecyclerAdapter mRecyclerAdapter;
     private MoviesTable mMoviesTable;
-    private MovieItemClickListener mMovieItemClickListener;
 
     public static MoviesFragment newInstance() {
         // Bundle logic might be useful in future
@@ -56,11 +57,11 @@ public class MoviesFragment extends ContentFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Assert.assertNotNull(getContext());
-        mMovieItemClickListener = new MovieItemClickListener();
         mMoviesTable = new MoviesTable(getContext());
         mRecyclerView = view.findViewById(R.id.movies_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new MoviesRecyclerAdapter(mMoviesTable.getMoviesOrderedByDate(), mMovieItemClickListener);
+        MovieItemClickListener movieItemClickListener = new MovieItemClickListener();
+        mRecyclerAdapter = new MoviesRecyclerAdapter(mMoviesTable.getMoviesOrderedByDate(), movieItemClickListener);
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 
@@ -72,27 +73,29 @@ public class MoviesFragment extends ContentFragment {
 
     @Override
     public void addElement() {
-        final MoviesFragment currentFragment = this;
-        if (currentFragment.getContext() == null) {
-            return;
-        }
-        new MaterialDialog.Builder(currentFragment.getContext())
-                .title(R.string.add_movie)
-                .inputRange(2, 30)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(R.string.add_title_hint, R.string.empty_string, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        new GetMovieInfoTask(currentFragment, input.toString(),
-                                getString(R.string.unknown), getString(R.string.no_description)).execute();
-                    }
-                }).show();
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivityForResult(intent, MOVIES_FRAGMENT_REQUEST_CODE);
     }
 
     @NonNull
     @Override
     SearchProvider getSearchProvider() {
         return new MovieSearchProvider();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MOVIES_FRAGMENT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Serializable searchResult = data.getSerializableExtra(SearchActivity.SEARCH_RESULT_KEY);
+                if (searchResult != null && MovieDataObject.class.isInstance(searchResult)) {
+                    MovieDataObject movieDataObject = (MovieDataObject) searchResult;
+                    mMoviesTable.insertMovie(movieDataObject);
+                    updateRecycler(movieDataObject);
+                }
+            }
+        }
     }
 
     private void updateRecycler() {
@@ -144,47 +147,14 @@ public class MoviesFragment extends ContentFragment {
             if (!movie.getPosterUrl().isEmpty()) {
                 Picasso.with(getContext())
                         .load(movie.getPosterUrl())
-                        .error(R.drawable.unknown_movie)
+                        .error(movie.getDefaultImageId())
                         .into(poster);
             } else {
                 Picasso.with(getContext())
-                        .load(R.drawable.unknown_movie)
+                        .load(movie.getDefaultImageId())
                         .into(poster);
             }
             completeInfoDialog.show();
-        }
-    }
-
-    // static modifier and WeakReference logic are required to avoid memory leak: goo.gl/hy74u2
-    private static class GetMovieInfoTask extends AsyncTask<Void, Void, MovieDataObject> {
-        private final WeakReference<MoviesFragment> moviesFragmentRef;
-        private final String mTitle;
-        private final String mDirector;
-        private final String mDescription;
-
-        GetMovieInfoTask(MoviesFragment moviesFragment, String title, String defDirector, String defDesc) {
-            moviesFragmentRef = new WeakReference<>(moviesFragment);
-            mTitle = title;
-            mDirector = defDirector;
-            mDescription = defDesc;
-        }
-
-        @Override
-        @NonNull
-        protected MovieDataObject doInBackground(Void... voids) {
-            return MovieApiHelper.getMovieDataObj(mTitle, mDirector, mDescription);
-        }
-
-        @Override
-        protected void onPostExecute(@NonNull MovieDataObject movie) {
-            MoviesFragment fragment = moviesFragmentRef.get();
-            if (fragment == null || fragment.getContext() == null) {
-                return;
-            }
-            new MoviesTable(fragment.getContext()).insertMovie(movie);
-            if (fragment.isResumed()) {
-                fragment.updateRecycler(movie);
-            }
         }
     }
 }

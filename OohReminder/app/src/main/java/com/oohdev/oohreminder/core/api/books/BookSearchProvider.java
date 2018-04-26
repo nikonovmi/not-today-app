@@ -16,8 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.google.common.primitives.Ints.min;
-
 public class BookSearchProvider implements SearchProvider {
     private static final int MAX_BOOKS_IN_RESULT = 3;
     @Nullable
@@ -78,9 +76,12 @@ public class BookSearchProvider implements SearchProvider {
         return new BookDataObject(title);
     }
 
-
     @NonNull
     private static String getCoverUrlFromCoverId(int coverId) {
         return OpenLibSearchAPIClient.COVER_URL_PREFIX + Integer.toString(coverId) + OpenLibSearchAPIClient.COVER_URL_SUFFIX;
+    }
+
+    private int min(int a, int b) {
+        return a < b ? a : b;
     }
 }
