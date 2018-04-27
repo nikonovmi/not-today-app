@@ -9,20 +9,25 @@ import com.oohdev.oohreminder.core.api.SearchProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Music is not supported by now. This is a stub class.
+ */
+
 public class MusicSearchProvider implements SearchProvider {
     @Override
     public void dismissPreviousAndRequestNew(@NonNull String searchQuery, @NonNull Callback callback) {
-        callback.onSuccess(new ArrayList<SearchDataObject>(Arrays.asList(new MovieDataObject(searchQuery, "TEST DIR", "TEST DESC"))), "");
+        callback.onSearchRequestSuccess(new ArrayList<SearchDataObject>(
+                Arrays.asList(new MovieDataObject(searchQuery, "STUB DIR", "TEST DESC"))), "stub");
     }
 
     @Override
-    public void unSubscribe() {
+    public void dismissRequests() {
 
     }
 
     @NonNull
     @Override
     public SearchDataObject buildSearchDataObject(@NonNull String title) {
-        return null;
+        return new MovieDataObject();
     }
 }

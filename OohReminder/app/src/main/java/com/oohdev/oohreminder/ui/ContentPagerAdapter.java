@@ -19,7 +19,7 @@ class ContentPagerAdapter extends FragmentPagerAdapter {
     private final Callbacks mCallbacks;
     private ContentFragment mCurrentFragment;
 
-    public ContentPagerAdapter(FragmentManager fm, Context context, Callbacks callbacks) {
+    ContentPagerAdapter(FragmentManager fm, Context context, Callbacks callbacks) {
         super(fm);
         Resources res = context.getResources();
         mTabNames = res.getStringArray(R.array.navigation_tabs);

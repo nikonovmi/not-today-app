@@ -27,6 +27,7 @@ import junit.framework.Assert;
 
 import java.io.Serializable;
 
+//TODO save request code elsewhere to be sure it's different from others
 public class MoviesFragment extends ContentFragment {
     private static final int MOVIES_FRAGMENT_REQUEST_CODE = 1;
 
@@ -136,6 +137,7 @@ public class MoviesFragment extends ContentFragment {
                     .customView(R.layout.movie_card_complete, true)
                     .positiveText(R.string.ok)
                     .build();
+            //TODO use custom view there
             View movieCardComplete = completeInfoDialog.getCustomView();
             TextView title = movieCardComplete.findViewById(R.id.movie_title_complete);
             title.setText(movie.getTitle());

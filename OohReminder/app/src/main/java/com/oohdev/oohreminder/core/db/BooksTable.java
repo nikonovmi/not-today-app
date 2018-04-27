@@ -11,6 +11,9 @@ import com.oohdev.oohreminder.core.BookDataObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Table has no threading stuff because it is expected to be small
+ */
 public class BooksTable {
     static final String CREATE_TABLE_QUERY;
     static final String UPDATE_QUERY;

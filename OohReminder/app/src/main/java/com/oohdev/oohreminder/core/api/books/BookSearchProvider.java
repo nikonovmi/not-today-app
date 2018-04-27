@@ -23,7 +23,7 @@ public class BookSearchProvider implements SearchProvider {
 
     @Override
     public void dismissPreviousAndRequestNew(@NonNull String searchQuery, @NonNull Callback callback) {
-        unSubscribe();
+        dismissRequests();
 
         OpenLibSearchInterface searchInterface = OpenLibSearchAPIClient.getRetrofitInstance().create(OpenLibSearchInterface.class);
         mSearchDisposable = searchInterface.findBooks(searchQuery)
@@ -31,11 +31,11 @@ public class BookSearchProvider implements SearchProvider {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(openLibSearch -> {
                     List<BookDataObject> searchResults = getBooksFromSearchModel(openLibSearch);
-                    callback.onSuccess(searchResults, searchQuery);
+                    callback.onSearchRequestSuccess(searchResults, searchQuery);
                 }, throwable -> {
                     BookDataObject plainBookDataObject = new BookDataObject(searchQuery);
-                    callback.onFailure(SearchFailure.INTERNET_CONNECTION, plainBookDataObject);
-                    // TODO pass real search failure, not always SearchFailure.INTERNET_CONNECTION
+                    callback.onSearchRequestFailure(SearchFailure.INTERNET_CONNECTION, plainBookDataObject);
+                    // TODO pass the real search failure, not always SearchFailure.INTERNET_CONNECTION
                 });
     }
 
@@ -63,7 +63,7 @@ public class BookSearchProvider implements SearchProvider {
     }
 
     @Override
-    public void unSubscribe() {
+    public void dismissRequests() {
         if (mSearchDisposable != null) {
             mSearchDisposable.dispose();
             mSearchDisposable = null;
@@ -81,6 +81,7 @@ public class BookSearchProvider implements SearchProvider {
         return OpenLibSearchAPIClient.COVER_URL_PREFIX + Integer.toString(coverId) + OpenLibSearchAPIClient.COVER_URL_SUFFIX;
     }
 
+    //TODO move to some utils class
     private int min(int a, int b) {
         return a < b ? a : b;
     }

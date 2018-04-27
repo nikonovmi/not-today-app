@@ -20,12 +20,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieSearchProvider implements SearchProvider {
     private static final int MAX_MOVIES_IN_RESULT = 3;
+    private static final String DIRECTOR_JOB = "director";
     @Nullable
     private Disposable mSearchDisposable = null;
 
     @Override
     public void dismissPreviousAndRequestNew(@NonNull String searchQuery, @NonNull Callback callback) {
-        unSubscribe();
+        dismissRequests();
 
         TmdbApiInterface tmdbApiInterface = TmdbApiClient.getRetrofitInstance().create(TmdbApiInterface.class);
         Observable<TMDBSearch.Entry> searchEntries = tmdbApiInterface.findMovies(TmdbApiClient.API_KEY, searchQuery)
@@ -37,13 +38,16 @@ public class MovieSearchProvider implements SearchProvider {
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movieDataObjects -> callback.onSuccess(movieDataObjects, searchQuery),
-                        throwable -> callback.onFailure(SearchFailure.API_ISSUES, new MovieDataObject(searchQuery)));
+                .subscribe(movieDataObjects -> callback.onSearchRequestSuccess(movieDataObjects, searchQuery),
+                        throwable -> {
+                            callback.onSearchRequestFailure(SearchFailure.API_ISSUES, new MovieDataObject(searchQuery));
+                            //TODO pass the real search failure
+                        });
     }
 
 
     @Override
-    public void unSubscribe() {
+    public void dismissRequests() {
         if (mSearchDisposable != null) {
             mSearchDisposable.dispose();
             mSearchDisposable = null;
@@ -73,7 +77,7 @@ public class MovieSearchProvider implements SearchProvider {
         }
         if (credits != null && credits.crew != null) {
             Observable.fromIterable(credits.crew)
-                    .filter(crew -> crew.job.trim().toLowerCase().equals("director"))
+                    .filter(crew -> crew.job.trim().toLowerCase().equals(DIRECTOR_JOB))
                     .take(1)
                     .subscribe(crew -> result.setDirector(crew.name));
         }

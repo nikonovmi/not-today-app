@@ -17,14 +17,15 @@ class MoviesRecyclerAdapter extends BasicContentRecyclerAdapter<MovieDataObject,
         super(movies, clickResolver);
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MovieDataObject movie = mItems.get(position);
         holder.movieTitle.setText(movie.getTitle());
         holder.movieDirector.setText(movie.getDirector());

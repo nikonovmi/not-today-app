@@ -9,6 +9,7 @@ import com.oohdev.oohreminder.ui.search.dagger.DaggerSearchComponent;
 import com.oohdev.oohreminder.ui.search.dagger.SearchComponent;
 
 public class App extends Application {
+    //TODO add Context component
     protected static App instance;
 
     private SearchComponent mSearchComponent;

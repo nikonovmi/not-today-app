@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.oohdev.oohreminder.R;
@@ -33,6 +32,11 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+/**
+ * SearchActivity is designed to be a separate part of the application.
+ * All searching logic is performed by an injected SearchProvider class.
+ * The activity returns RESULT_OK if user selected any search result and the result itself.
+ */
 public class SearchActivity extends AppCompatActivity implements SearchProvider.Callback {
     public static String SEARCH_RESULT_KEY = "SEARCH RESULT KEY";
 
@@ -123,12 +127,12 @@ public class SearchActivity extends AppCompatActivity implements SearchProvider.
 
     @Override
     protected void onPause() {
-        mSearchProvider.unSubscribe();
+        mSearchProvider.dismissRequests();
         super.onPause();
     }
 
     @Override
-    public void onSuccess(@NonNull List<? extends SearchDataObject> searchResults, @NonNull String searchQuery) {
+    public void onSearchRequestSuccess(@NonNull List<? extends SearchDataObject> searchResults, @NonNull String searchQuery) {
         mSearchRecyclerAdapter.clear();
         List<SearchDataObject> searchDataObjects = new ArrayList<>(searchResults);
         searchDataObjects.add(mSearchProvider.buildSearchDataObject(searchQuery));
@@ -137,7 +141,7 @@ public class SearchActivity extends AppCompatActivity implements SearchProvider.
     }
 
     @Override
-    public void onFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery) {
+    public void onSearchRequestFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery) {
         mSearchRecyclerAdapter.clear();
         mSearchRecyclerAdapter.addItems(Collections.singletonList(plainSearchQuery));
         //TODO understand failure

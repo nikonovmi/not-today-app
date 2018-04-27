@@ -24,13 +24,14 @@ class BooksRecyclerAdapter extends BasicContentRecyclerAdapter<BookDataObject, B
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_card, parent, false);
         return new BooksRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BookDataObject book = mItems.get(position);
         holder.mBookAuthor.setText(book.getAuthor());
         holder.mBookTitle.setText(book.getTitle());

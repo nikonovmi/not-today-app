@@ -7,13 +7,13 @@ import java.util.List;
 public interface SearchProvider {
     void dismissPreviousAndRequestNew(@NonNull String searchQuery, @NonNull Callback callback);
 
-    void unSubscribe();
+    void dismissRequests();
 
     @NonNull
     SearchDataObject buildSearchDataObject(@NonNull String title);
 
     interface Callback {
-        void onSuccess(@NonNull List<? extends SearchDataObject> searchResults, @NonNull String searchQuery);
-        void onFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery);
+        void onSearchRequestSuccess(@NonNull List<? extends SearchDataObject> searchResults, @NonNull String searchQuery);
+        void onSearchRequestFailure(@NonNull SearchFailure failure, @NonNull SearchDataObject plainSearchQuery);
     }
 }

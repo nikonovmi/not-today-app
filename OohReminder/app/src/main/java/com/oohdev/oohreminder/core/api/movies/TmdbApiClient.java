@@ -6,8 +6,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 class TmdbApiClient {
-    public static final String POSTER_URL_PREFIX = "http://image.tmdb.org/t/p/w185";
-    public static final String API_KEY = "ce7de4425aba73430f65ae5ba7544419";
+    static final String POSTER_URL_PREFIX = "http://image.tmdb.org/t/p/w185";
+    static final String API_KEY = "ce7de4425aba73430f65ae5ba7544419";
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "http://api.themoviedb.org/3/";
 
@@ -19,6 +19,7 @@ class TmdbApiClient {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
+        // TODO add Interceptor for api key
         return retrofit;
     }
 }

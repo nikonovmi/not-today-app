@@ -26,11 +26,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BooksFragment extends ContentFragment {
+    //TODO save request code elsewhere to be sure it's different from others
     private static final int BOOKS_FRAGMENT_REQUEST_CODE = 2;
     private BooksTable mBooksTable;
     private RecyclerView mRecyclerView;
     private BooksRecyclerAdapter mRecyclerAdapter;
 
+    //TODO remove?
     public static BooksFragment newInstance() {
         Bundle args = new Bundle();
         BooksFragment fragment = new BooksFragment();
@@ -78,7 +80,7 @@ public class BooksFragment extends ContentFragment {
         mRecyclerAdapter.replaceItems(mBooksTable.getBooksOrderedByDate());
     }
 
-    private void updateRecycler(BookDataObject book) {
+    private void updateRecycler(@NonNull BookDataObject book) {
         mRecyclerAdapter.addItem(book);
         mRecyclerView.scrollToPosition(0);
     }

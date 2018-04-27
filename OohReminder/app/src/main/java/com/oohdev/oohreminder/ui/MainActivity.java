@@ -21,7 +21,7 @@ import com.oohdev.oohreminder.R;
 
 public class MainActivity extends AppCompatActivity implements ContentPagerAdapter.Callbacks {
 
-    private static final String GIT_URL = "https://github.com/degivan/ifmo-android-oohreminder";
+    private static final String GIT_URL = "https://github.com/nikonovmi/not-today-app";
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity implements ContentPagerAdapt
                 animateFab(tab.getPosition());
             }
         });
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pagerAdapter.getCurrentContentFragment().addElement();
-            }
-        });
+        mFab.setOnClickListener(view -> pagerAdapter.getCurrentContentFragment().addElement());
     }
 
     @Override
